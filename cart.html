@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Shopping Cart - FoodHub</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <style>
+        /* --- Modern Design System & Variables --- */
+        :root {
+            --primary-color: #ff6347;
+            --secondary-color: #ff8a65;
+            --primary-soft: rgba(255, 99, 71, 0.15);
+            --gradient: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            
+            --text-color: #2c3e50;
+            --text-muted: #7f8c8d;
+            --border-color: #ecf0f1;
+            
+            --body-bg: #f9fafb;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.02), 0 10px 20px rgba(0, 0, 0, 0.05);
+            --card-radius: 1rem;
+            
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
+        }
+        
+        body {
+            background-color: var(--body-bg);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif; /* A cleaner, modern font - add a link in head if needed */
+        }
+        .section-padding { padding: 4rem 0; }
+        
+        /* --- Page & Section Headers --- */
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 2.5rem;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .section-header h3 {
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+        .clear-cart-btn {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .clear-cart-btn:hover { color: var(--error-color); }
+
+        /* --- Refined Card Styles --- */
+        .content-card {
+            background: var(--card-bg);
+            border-radius: var(--card-radius);
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+        }
+        
+        /* --- Cart Item Styling --- */
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+        .cart-item:hover {
+            transform: scale(1.02);
+        }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item-image {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        .cart-item-details h5 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .item-total-price {
+            font-weight: 700;
+            font-size: 1.2rem;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        /* --- Quantity Selector --- */
+        .quantity-selector {
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+        }
+        .quantity-selector .qty-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            width: 35px;
+            height: 35px;
+            color: var(--text-muted);
+            border-radius: 50%;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .quantity-selector .qty-btn:hover {
+            background-color: var(--primary-soft);
+            color: var(--primary-color);
+        }
+        .quantity-selector .qty-input {
+            width: 40px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            font-weight: bold;
+        }
+        
+        /* --- Item Action Buttons --- */
+        .action-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+        .action-btn:hover {
+            border-color: var(--border-color);
+            transform: scale(1.1);
+        }
+        .action-btn.remove-item-btn:hover { color: var(--error-color); }
+        .action-btn.save-item-btn:hover { color: #3498db; }
+        
+        /* --- Order Summary Card --- */
+        @media (min-width: 992px) {
+            .order-summary-card { position: sticky; top: 100px; }
+        }
+        .summary-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        .summary-row-title { display: flex; align-items: center; gap: 0.75rem; color: var(--text-muted); }
+        .summary-row-value { font-weight: 600; }
+        .summary-row#discount-row .summary-row-value { color: var(--success-color); }
+        .summary-row.total {
+            font-size: 1.5rem;
+            font-weight: 800;
+            border-top: 2px solid var(--border-color);
+            padding-top: 1.5rem;
+            margin-top: 1rem;
+        }
+        .summary-row.total .summary-row-title { font-weight: 800; color: var(--text-color); }
+        .summary-row.total .summary-row-value { font-size: 1.75rem; color: var(--primary-color); }
+        
+        /* --- Promo Code Section --- */
+        #promo-message.error { color: var(--error-color); font-size: 0.875rem;}
+
+        /* --- Checkout Button --- */
+        .checkout-btn {
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px !important;
+            border: none;
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 99, 71, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .checkout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 99, 71, 0.4);
+        }
+
+        /* --- Empty States --- */
+        .empty-message {
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+        .empty-message i {
+            font-size: 4rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    
+   <!-- Offcanvas Sidebar for Mobile -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="mobile-sidebar" aria-labelledby="sidebarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="sidebarLabel"><i class="fas fa-utensils"></i> FoodHub Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav flex-column">
+                <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#restaurants">Restaurants</a></li>
+                <li class="nav-item"><a class="nav-link" href="#deals">Offers</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                <li class="nav-item mt-3">
+                    <a href="cart.html">
+                        <div class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i> My Cart
+                            <span class="cart-badge ms-2">3</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <div class="theme-switch-wrapper mt-4">
+                <i class="fas fa-sun"></i>
+                <label class="theme-switch mx-2">
+                    <input type="checkbox" id="sidebar-theme-toggle">
+                    <span class="slider"></span>
+                </label>
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="#"><i class="fas fa-utensils"></i> FoodHub</a>
+            <!-- MODIFIED: Button now targets the offcanvas sidebar -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobile-sidebar" aria-controls="mobile-sidebar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#restaurants">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#deals">Offers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a href="cart.html">
+                        <div class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-badge">3</span>
+                        </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="section-padding">
+        <div class="container">
+            <h1 class="page-title">Your Cart</h1>
+            <div class="row g-lg-5 g-4">
+                <div class="col-lg-8">
+                    <div class="content-card">
+                        <div class="section-header">
+                            <h3 id="cart-item-count-header">Shopping Cart (2 items)</h3>
+                            <a href="#" class="clear-cart-btn" id="clear-cart">
+                                <i class="fas fa-trash-alt me-1"></i> Clear all
+                            </a>
+                        </div>
+                        <div id="cart-items-container">
+                            <div class="cart-item" data-id="1" data-price="12.99">
+                                <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200" alt="Burger" class="cart-item-image">
+                                <div class="cart-item-details flex-grow-1">
+                                    <h5>Premium Angus Burger</h5>
+                                    <p class="text-muted small mb-0">From Burger Palace</p>
+                                </div>
+                                <div class="quantity-selector d-flex align-items-center">
+                                    <button class="qty-btn minus">-</button>
+                                    <input type="text" class="qty-input" value="1" readonly>
+                                    <button class="qty-btn plus">+</button>
+                                </div>
+                                <div class="item-total-price">$12.99</div>
+                                <div class="item-actions">
+                                    <button class="action-btn save-item-btn" title="Save for Later"><i class="fas fa-bookmark"></i></button>
+                                    <button class="action-btn remove-item-btn" title="Remove Item"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                             <div class="cart-item" data-id="2" data-price="14.99">
+                                <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200" alt="Pizza" class="cart-item-image">
+                                <div class="cart-item-details flex-grow-1">
+                                    <h5>Spicy Pepperoni Pizza</h5>
+                                    <p class="text-muted small mb-0">From Pizza House</p>
+                                </div>
+                                <div class="quantity-selector d-flex align-items-center">
+                                    <button class="qty-btn minus">-</button>
+                                    <input type="text" class="qty-input" value="2" readonly>
+                                    <button class="qty-btn plus">+</button>
+                                </div>
+                                <div class="item-total-price">$29.98</div>
+                                <div class="item-actions">
+                                    <button class="action-btn save-item-btn" title="Save for Later"><i class="fas fa-bookmark"></i></button>
+                                    <button class="action-btn remove-item-btn" title="Remove Item"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="empty-message d-none" id="empty-cart-message">
+                            <i class="fas fa-shopping-bag"></i>
+                            <h3>Your cart is empty</h3>
+                        </div>
+                    </div>
+
+                    <div class="content-card mt-4">
+                         <div class="section-header">
+                            <h3>Saved for Later</h3>
+                        </div>
+                        <div id="saved-items-container">
+                             <div class="empty-message" id="empty-saved-message">
+                                <i class="fas fa-bookmark"></i>
+                                <h3>No items saved for later</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4"> 
+                    <div class="content-card order-summary-card">
+                        <h3 class="mb-4 fw-bold">Order Summary</h3>
+                        <div class="summary-row">
+                            <div class="summary-row-title"><i class="fas fa-shopping-basket fa-fw"></i> Subtotal</div>
+                            <div class="summary-row-value" id="cart-subtotal">$0.00</div>
+                        </div>
+                        <div class="summary-row">
+                             <div class="summary-row-title"><i class="fas fa-truck fa-fw"></i> Delivery Fee</div>
+                            <div class="summary-row-value" id="delivery-fee">$5.00</div>
+                        </div>
+                        <div class="summary-row d-none" id="discount-row">
+                            <div class="summary-row-title"><i class="fas fa-tag fa-fw"></i> Discount</div>
+                            <div class="summary-row-value" id="discount-amount">-$0.00</div>
+                        </div>
+                        
+                        <div class="promo-code-section my-4">
+                            <label for="promo-code" class="form-label small text-muted">Have a promo code?</label>
+                            
+                            <div id="promo-input-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="promo-code" placeholder="Enter code">
+                                    <button class="btn btn-dark" id="apply-promo-btn">
+                                        <span class="btn-text">Apply</span>
+                                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                                <div id="promo-message" class="mt-2 d-none"></div>
+                            </div>
+
+                            <div id="promo-applied-group" class="d-none">
+                                <div class="d-flex justify-content-between align-items-center bg-light p-2 rounded">
+                                    <div class="text-success small">
+                                        <i class="fas fa-check-circle me-1"></i>
+                                        <strong id="applied-code-text"></strong> applied!
+                                    </div>
+                                    <button class="btn btn-sm btn-link text-danger" id="remove-promo-btn">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="summary-row total">
+                            <div class="summary-row-title">Total</div>
+                            <div class="summary-row-value" id="cart-total">$0.00</div>
+                        </div>
+                        <div class="d-grid">
+                            <a href="checkout.html">
+                            <button class="btn btn-lg w-100 mt-3 checkout-btn">
+                                Proceed to Checkout <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+     <!-- Footer -->
+    <footer id="contact">
+        <div class="container"><div class="row"><div class="col-md-3 mb-4"><h5><i class="fas fa-utensils"></i> FoodHub</h5><p class="text-muted">Your favorite food, delivered fast at your door.</p></div><div class="col-md-3 mb-4"><h5>Quick Links</h5><a href="#">About Us</a><br><a href="#">Help Center</a><br><a href="#">Privacy Policy</a></div><div class="col-md-3 mb-4"><h5>Follow Us</h5><a href="#"><i class="fab fa-facebook me-2"></i> Facebook</a><br><a href="#"><i class="fab fa-twitter me-2"></i> Twitter</a><br><a href="#"><i class="fab fa-instagram me-2"></i> Instagram</a></div><div class="col-md-3 mb-4"><h5>Payment Partners</h5><div class="d-flex gap-2 fs-3"><i class="fab fa-cc-visa"></i><i class="fab fa-cc-mastercard"></i><i class="fab fa-cc-paypal"></i><i class="fab fa-google-pay"></i></div></div></div><hr style="border-color: #555;"><div class="text-center text-muted"><p>&copy; 2025 FoodHub. All rights reserved.</p></div></div>
+    </footer>
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- State and Constants ---
+        const PROMO_CODES = { "SAVE10": { type: 'fixed', value: 10 }, "FREEDELIVERY": { type: 'delivery', value: 0 }};
+        let appliedPromo = null;
+
+        // --- DOM Elements ---
+        const cartItemsContainer = document.getElementById('cart-items-container');
+        const savedItemsContainer = document.getElementById('saved-items-container');
+        const promoInputGroup = document.getElementById('promo-input-group');
+        const promoAppliedGroup = document.getElementById('promo-applied-group');
+        const promoMessageElem = document.getElementById('promo-message');
+        
+        // --- Functions ---
+        function updateCartHeader() {
+            const itemCount = cartItemsContainer.querySelectorAll('.cart-item').length;
+            const header = document.getElementById('cart-item-count-header');
+            header.textContent = `Shopping Cart (${itemCount} item${itemCount !== 1 ? 's' : ''})`;
+        }
+
+        function updateCartTotals() {
+            const cartItems = cartItemsContainer.querySelectorAll('.cart-item');
+            let subtotal = 0;
+            cartItems.forEach(item => {
+                const price = parseFloat(item.dataset.price);
+                const quantity = parseInt(item.querySelector('.qty-input').value);
+                const itemTotal = price * quantity;
+                subtotal += itemTotal;
+                item.querySelector('.item-total-price').textContent = `$${itemTotal.toFixed(2)}`;
+            });
+
+            let deliveryFee = cartItems.length > 0 ? 5.00 : 0;
+            let discount = 0;
+
+            if (appliedPromo) {
+                if (appliedPromo.type === 'fixed') {
+                    discount = appliedPromo.value;
+                }
+                if (appliedPromo.type === 'delivery') {
+                    discount = 5.00; // The value of the discount is the delivery fee
+                    deliveryFee = 0;
+                }
+                document.getElementById('discount-row').classList.remove('d-none');
+                document.getElementById('discount-amount').textContent = `-$${discount.toFixed(2)}`;
+            } else {
+                document.getElementById('discount-row').classList.add('d-none');
+            }
+            
+            let total = subtotal + deliveryFee - (appliedPromo?.type === 'fixed' ? discount : 0);
+            total = total < 0 ? 0 : total;
+
+            document.getElementById('delivery-fee').textContent = `$${deliveryFee.toFixed(2)}`;
+            document.getElementById('cart-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('cart-total').textContent = `$${total.toFixed(2)}`;
+            
+            document.getElementById('empty-cart-message').classList.toggle('d-none', cartItems.length > 0);
+            updateCartHeader();
+        }
+        
+        function handleItemAction(event) {
+            const target = event.target;
+            const cartItem = target.closest('.cart-item');
+            if (!cartItem) return;
+
+            if (target.matches('.qty-btn, .qty-btn *')) {
+                const input = cartItem.querySelector('.qty-input');
+                let quantity = parseInt(input.value);
+                if (target.closest('.plus')) {
+                    quantity++;
+                } else if (target.closest('.minus') && quantity > 1) {
+                    quantity--;
+                }
+                input.value = quantity;
+                updateCartTotals();
+            }
+
+            if (target.matches('.remove-item-btn, .remove-item-btn *')) {
+                cartItem.style.opacity = '0';
+                setTimeout(() => { cartItem.remove(); updateCartTotals(); }, 300);
+            }
+            
+            if (target.matches('.save-item-btn, .save-item-btn *')) {
+                moveItem(cartItem, savedItemsContainer, 'move-to-cart-btn', 'fa-shopping-cart', 'Move to Cart');
+            }
+
+            if (target.matches('.move-to-cart-btn, .move-to-cart-btn *')) {
+                moveItem(cartItem, cartItemsContainer, 'save-item-btn', 'fa-bookmark', 'Save for Later');
+            }
+        }
+        
+        function moveItem(itemNode, destination, newBtnClass, newIconClass, newTitle) {
+            const actionBtn = itemNode.querySelector('.save-item-btn, .move-to-cart-btn');
+            actionBtn.className = `action-btn ${newBtnClass}`;
+            actionBtn.title = newTitle;
+            actionBtn.querySelector('i').className = `fas ${newIconClass}`;
+            
+            destination.appendChild(itemNode);
+            document.getElementById('empty-saved-message').style.display = savedItemsContainer.querySelector('.cart-item') ? 'none' : 'block';
+            updateCartTotals();
+        }
+
+        function updatePromoUI() {
+            if (appliedPromo) {
+                promoInputGroup.classList.add('d-none');
+                promoAppliedGroup.classList.remove('d-none');
+                const appliedCode = Object.keys(PROMO_CODES).find(key => PROMO_CODES[key] === appliedPromo);
+                document.getElementById('applied-code-text').textContent = appliedCode;
+            } else {
+                promoInputGroup.classList.remove('d-none');
+                promoAppliedGroup.classList.add('d-none');
+                promoMessageElem.classList.add('d-none');
+                document.getElementById('promo-code').value = '';
+            }
+        }
+
+        // --- Event Listeners ---
+        document.getElementById('clear-cart').addEventListener('click', (e) => {
+            e.preventDefault();
+            cartItemsContainer.querySelectorAll('.cart-item').forEach(item => {
+                item.style.opacity = '0';
+                setTimeout(() => { item.remove(); updateCartTotals(); }, 300);
+            });
+        });
+
+        document.querySelector('.container').addEventListener('click', handleItemAction);
+        
+        document.getElementById('apply-promo-btn').addEventListener('click', function() {
+            const promoInput = document.getElementById('promo-code');
+            const code = promoInput.value.trim().toUpperCase();
+            const btn = this;
+            const btnText = btn.querySelector('.btn-text');
+            const spinner = btn.querySelector('.spinner-border');
+
+            if (!code) {
+                promoMessageElem.innerHTML = `<i class="fas fa-exclamation-circle"></i> Please enter a code.`;
+                promoMessageElem.className = 'mt-2 error';
+                promoMessageElem.classList.remove('d-none');
+                return;
+            }
+
+            btnText.classList.add('d-none');
+            spinner.classList.remove('d-none');
+            btn.disabled = true;
+            promoMessageElem.classList.add('d-none');
+
+            setTimeout(() => { // Simulate API call
+                if (PROMO_CODES[code]) {
+                    appliedPromo = PROMO_CODES[code];
+                } else {
+                    appliedPromo = null;
+                    promoMessageElem.innerHTML = `<i class="fas fa-exclamation-circle"></i> Invalid promo code.`;
+                    promoMessageElem.className = 'mt-2 error';
+                    promoMessageElem.classList.remove('d-none');
+                }
+                
+                updateCartTotals();
+                updatePromoUI();
+
+                btnText.classList.remove('d-none');
+                spinner.classList.add('d-none');
+                btn.disabled = false;
+            }, 1000);
+        });
+
+        document.getElementById('remove-promo-btn').addEventListener('click', function() {
+            appliedPromo = null;
+            updateCartTotals();
+            updatePromoUI();
+        });
+
+        // --- Initial Load ---
+        updateCartTotals();
+        document.getElementById('empty-saved-message').style.display = savedItemsContainer.querySelector('.cart-item') ? 'none' : 'block';
+    });
+    </script>
+</body>
+</html>
