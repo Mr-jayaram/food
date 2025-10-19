@@ -1,0 +1,28 @@
+1. body bg color all opage css body remove
+
+2. content bg white check
+
+3. login and register
+
+4. each page check feel style less add to copy code to the google studio ai tell improve css
+
+5. all page link
+
+6. ofline css script
+
+7. css collect and add style css
+
+8. check all responsive
+
+9. sidebar menu icon border and improve icon
+
+10. order list check the delivery time run 
+
+11. header nav footer footer nav	
+
+12. header improve all filles link
+
+
+other 
+
+also ecoom link correct

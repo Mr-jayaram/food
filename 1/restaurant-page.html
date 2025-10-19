@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Detail | Mama's Italian Kitchen - FoodHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        /* Basic CSS Reset & Variables (Consistent) */
+        :root {
+            --primary-color: #ff6b6b;
+            --primary-color-light: #ffebef;
+            --secondary-color: #3f3f3f;
+            --text-color: #333;
+            --background-color: #f8f9fa;
+            --card-background: #ffffff;
+            --border-color: #e9ecef;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(90deg, #ff6b6b, #ff8e5e);
+            --success-color: #28a745;
+        }
+
+        [data-theme='dark'] {
+            --primary-color: #ff6b6b;
+            --primary-color-light: #522d2d;
+            --secondary-color: #f1f1f1;
+            --text-color: #f1f1f1;
+            --background-color: #1e1e1e;
+            --card-background: #2a2a2a;
+            --border-color: #3a3a3a;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.6);
+            --success-color: #28a745;
+        }
+
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            transition: background-color 0.3s, color 0.3s;
+            padding-top: 72px;
+        }
+        
+        .navbar {
+            background-color: var(--card-background);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            color: var(--primary-color) !important;
+            font-weight: 700;
+        }
+
+        /* --- Page Specific Styles --- */
+        
+        /* Restaurant Hero/Header */
+        .restaurant-header {
+            background-color: var(--card-background);
+            padding-top: 30px;
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden; /* For fixed image */
+        }
+
+        .restaurant-image-wrapper {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+        
+        /* IMPROVEMENT 1: Parallax/Fixed Image Effect */
+        .restaurant-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* transform: translateZ(0); *//* Performance improvement */
+        }
+        
+        .rating-badge {
+            background-color: var(--success-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .text-detail {
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+        }
+        
+        /* Menu Tabs (Sticky Improved) */
+        .nav-tabs {
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 70px;
+            background-color: white;
+            z-index: 10;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            background-color: transparent;
+        }
+        
+        /* IMPROVEMENT 2 & 4: Menu Item Card Hover/Elevation */
+        .menu-item-wrapper {
+            background-color: var(--card-background);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        
+        .menu-item-wrapper:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-color-light);
+        }
+
+        .menu-item-card {
+            display: flex;
+            align-items: center;
+        }
+
+        .item-details {
+            flex-grow: 1;
+        }
+
+        .item-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        /* IMPROVEMENT 3: Accentuated Price Tag */
+        .item-price {
+            display: inline-block;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            background-color: var(--primary-color-light);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .item-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-left: 15px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-to-cart-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 50%; /* Circle button */
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .add-to-cart-btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(90deg, #ff8e5e, #ff6b6b);
+        }
+        .add-to-cart-btn.btn-success {
+             background: var(--success-color);
+             box-shadow: 0 4px 6px rgba(40, 167, 69, 0.4);
+        }
+
+        /* Fixed Cart Summary (Desktop) */
+        .cart-summary {
+            position: sticky;
+            top: 100px;
+            padding: 25px;
+            border-radius: 12px;
+            background-color: var(--card-background);
+            box-shadow: var(--shadow-hover); /* Slightly more prominent */
+            border: 1px solid var(--border-color);
+        }
+        
+        .checkout-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 10px 0;
+        }
+        
+        /* IMPROVEMENT 5: Review Card Style */
+        .review-card {
+            background-color: var(--card-background);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .reviewer-name {
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        .review-rating {
+            color: #ffc107;
+            font-size: 1rem;
+        }
+        .review-text {
+            border-left: 3px solid var(--primary-color-light);
+            padding-left: 15px;
+            font-style: italic;
+        }
+
+        /* Media Queries (Kept for Responsiveness) */
+        @media (max-width: 991.98px) {
+            .restaurant-image-wrapper {
+                height: 200px;
+            }
+            .restaurant-image {
+                height: 200px;
+            }
+            .cart-summary { display: none; }
+            .menu-col { padding-bottom: 80px; } 
+            .mobile-cart-bar {
+                display: flex;
+                background-color: var(--card-background);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-utensils"></i> FoodHub</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="search-results.html"><i class="fas fa-arrow-left me-1"></i> Back to Search</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a href="cart.html" class="nav-link p-0">
+                        <div class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-badge">3</span>
+                        </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <header class="restaurant-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8 restaurant-info-col">
+                    <h1 class="mb-2">Mama's Italian Kitchen</h1>
+                    <p class="text-muted mb-2">Classic Italian, Pizza, Pasta</p>
+                    <div class="d-flex align-items-center mb-3 flex-wrap gap-3">
+                        <span class="rating-badge"><i class="fas fa-star me-1"></i> 4.7 (1.2k)</span>
+                        <span class="text-detail"><i class="fas fa-clock me-1"></i> **25-35 min**</span>
+                        <span class="text-detail"><i class="fas fa-money-bill-wave me-1"></i> Avg $15</span>
+                    </div>
+                    <p class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> 123 Main Street, Downtown City</p>
+                    <button class="btn btn-sm btn-outline-danger mt-2"><i class="fas fa-heart me-1"></i> Save Restaurant</button>
+                </div>
+                <div class="col-md-4 restaurant-image-col">
+                    <div class="restaurant-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1555939595-58d7cb561ad1?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600&h=400" alt="Restaurant Front" class="restaurant-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 menu-col">
+                    <ul class="nav nav-tabs mb-4" role="tablist">
+                        <li class="nav-item"><a class="nav-link active" id="menu-tab" data-bs-toggle="tab" href="#menu-content" role="tab">Full Menu</a></li>
+                        <li class="nav-item"><a class="nav-link" id="reviews-tab" data-bs-toggle="tab" href="#reviews-content" role="tab">Reviews (1.2k)</a></li>
+                        <li class="nav-item"><a class="nav-link" id="info-tab" data-bs-toggle="tab" href="#info-content" role="tab">Info</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        
+                        <div class="tab-pane fade show active" id="menu-content" role="tabpanel">
+                            
+                            <!-- <h3 class="mb-3 mt-4 " id="starters-section">Starters</h3> -->
+                            
+                            <div class="menu-item-wrapper">
+                                <div class="menu-item-card">
+                                    <div class="item-details">
+                                        <h5 class="item-title">Garlic Knots</h5>
+                                        <p class="text-muted small mb-2">Warm bread knots tossed in garlic butter and parsley.</p>
+                                        <span class="item-price">$6.50</span>
+                                    </div>
+                                    <img src="https://images.unsplash.com/photo-1590509618196-a8315181b53f?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&h=200" alt="Garlic Knots" class="item-image">
+                                    <button class="btn add-to-cart-btn ms-3"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                            
+                            <div class="menu-item-wrapper">
+                                <div class="menu-item-card">
+                                    <div class="item-details">
+                                        <h5 class="item-title">Caprese Skewers</h5>
+                                        <p class="text-muted small mb-2">Cherry tomatoes, mozzarella balls, and fresh basil.</p>
+                                        <span class="item-price">$9.00</span>
+                                    </div>
+                                    <img src="https://images.unsplash.com/photo-1543353071-873f17a7a288?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&h=200" alt="Caprese Skewers" class="item-image">
+                                    <button class="btn add-to-cart-btn ms-3"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- <h3 class="mb-3 mt-4 " id="pizza-section">Pizzas</h3> -->
+                            
+                            <div class="menu-item-wrapper">
+                                <div class="menu-item-card">
+                                    <div class="item-details">
+                                        <h5 class="item-title">Margherita Classic</h5>
+                                        <p class="text-muted small mb-2">Tomato, mozzarella, basil. The perfect classic.</p>
+                                        <span class="item-price">$16.50</span>
+                                    </div>
+                                    <img src="https://images.unsplash.com/photo-1588315029754-2fa0878e1215?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&h=200" alt="Margherita Pizza" class="item-image">
+                                    <button class="btn add-to-cart-btn ms-3"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="menu-item-wrapper">
+                                <div class="menu-item-card">
+                                    <div class="item-details">
+                                        <h5 class="item-title">Spicy Pepperoni</h5>
+                                        <p class="text-muted small mb-2">Pepperoni, spicy chili oil, and extra cheese.</p>
+                                        <span class="item-price">$18.99</span>
+                                    </div>
+                                    <img src="https://images.unsplash.com/photo-1604382354934-08c5ea489c7c?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&h=200" alt="Pepperoni Pizza" class="item-image">
+                                    <button class="btn add-to-cart-btn ms-3"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="reviews-content" role="tabpanel">
+                            <h4 class="mt-4 mb-3">Customer Reviews</h4>
+                            
+                            <div class="review-card">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <p class="reviewer-name mb-1">Sarah L.</p>
+                                        <div class="review-rating">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <p class="small text-muted mt-0">3 days ago</p>
+                                </div>
+                                <p class="mb-0 review-text">"The Margherita pizza was fantastic! Delivery was quick and the food was hot. Highly recommend."</p>
+                            </div>
+                            
+                            <div class="review-card">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <p class="reviewer-name mb-1">Mark R.</p>
+                                        <div class="review-rating">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <p class="small text-muted mt-0">1 week ago</p>
+                                </div>
+                                <p class="mb-0 review-text">"Great service, but the Caprese could have used more balsamic glaze. Still, a solid 4 stars."</p>
+                            </div>
+                            
+                            <button class="btn btn-outline-primary w-100 mt-3">Load More Reviews</button>
+                        </div>
+
+                        <div class="tab-pane fade" id="info-content" role="tabpanel">
+                            <h4 class="mt-4 mb-3">Restaurant Information</h4>
+                            <p><strong>Cuisine:</strong> Italian, European</p>
+                            <p><strong>Hours:</strong> Mon - Sat: 11:00 AM - 10:00 PM | Sun: 12:00 PM - 9:00 PM</p>
+                            <p><strong>Phone:</strong> (555) 123-4567</p>
+                            <p><strong>About:</strong> Mama's Italian Kitchen has been serving authentic, homemade Italian food since 1995. We use only the freshest ingredients to bring the taste of Italy to your table.</p>
+                        </div>
+
+                    </div>
+                    
+                </div>
+                
+                <div class="col-lg-4 d-none d-lg-block">
+                    <div class="cart-summary">
+                        <h5><i class="fas fa-shopping-basket me-2"></i> Your Order</h5>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>2x Garlic Knots</span>
+                            <span class="fw-bold">$13.00</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>1x Margherita Classic</span>
+                            <span class="fw-bold">$16.50</span>
+                        </div>
+                        
+                        <hr style="border-color: var(--border-color);">
+                        
+                        <div class="d-flex justify-content-between small text-muted"><span>Subtotal:</span><span>$29.50</span></div>
+                        <div class="d-flex justify-content-between small text-muted"><span>Delivery Fee:</span><span>$4.00</span></div>
+                        <div class="d-flex justify-content-between small text-muted mb-3"><span>Tax:</span><span>$1.50</span></div>
+                        
+                        <div class="d-flex justify-content-between fw-bold fs-5 mt-3 ">
+                            <span>TOTAL:</span>
+                            <span id="desktop-cart-total">$35.00</span>
+                        </div>
+                        
+                        <button class="btn checkout-btn w-100 mt-4">Checkout <i class="fas fa-arrow-right ms-2"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="mobile-cart-bar d-lg-none">
+        <div class="d-flex justify-content-between align-items-center w-100">
+            <div class="d-flex flex-column">
+                <span class="text-muted small">3 Items</span>
+                <span class="cart-total" id="mobile-cart-total">$35.00</span>
+            </div>
+            <button class="btn checkout-btn px-4 py-2">View Cart <i class="fas fa-arrow-right ms-2"></i></button>
+        </div>
+    </div>
+    
+    <footer style="padding: 40px 0 20px 0; background-color: var(--card-background); border-top: 1px solid var(--border-color);">
+        <div class="container text-center text-muted"><p>&copy; 2025 FoodHub. All rights reserved.</p></div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Cart Functionality Simulation ---
+            let cartCount = 3; 
+            let cartTotal = 35.00;
+            const badge = document.querySelector('.cart-badge');
+            const desktopTotal = document.getElementById('desktop-cart-total');
+            const mobileTotal = document.getElementById('mobile-cart-total');
+            
+            function updateCartUI() {
+                badge.textContent = cartCount;
+                desktopTotal.textContent = `$${cartTotal.toFixed(2)}`;
+                mobileTotal.textContent = `$${cartTotal.toFixed(2)}`;
+            }
+
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault(); 
+                    e.stopPropagation();
+
+                    const itemPriceElement = this.closest('.menu-item-wrapper').querySelector('.item-price');
+                    const itemPriceText = itemPriceElement.textContent.replace('$', '');
+                    const itemPrice = parseFloat(itemPriceText);
+
+                    cartCount += 1;
+                    cartTotal += itemPrice;
+
+                    updateCartUI();
+
+                    // Temporary visual feedback
+                    this.classList.add('btn-success');
+                    this.innerHTML = '<i class="fas fa-check"></i>';
+                    this.disabled = true;
+                    setTimeout(() => {
+                        this.classList.remove('btn-success');
+                        this.innerHTML = '<i class="fas fa-plus"></i>';
+                        this.disabled = false;
+                    }, 500);
+                });
+            });
+
+            // --- Theme Toggle Logic (Placeholder) ---
+            const htmlElement = document.documentElement;
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            htmlElement.setAttribute('data-theme', currentTheme);
+            
+            // Initial UI update
+            updateCartUI();
+        });
+    </script>
+</body>
+</html>
