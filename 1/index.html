@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodHub - Your Ultimate Food Delivery Partner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="mobile-sidebar" aria-labelledby="sidebarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="sidebarLabel"><i class="fas fa-utensils"></i> FoodHub Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav flex-column">
+                <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#restaurants">Restaurants</a></li>
+                <li class="nav-item"><a class="nav-link" href="#deals">Offers</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                <li class="nav-item mt-3">
+                    <a href="cart.html">
+                        <div class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i> My Cart
+                            <span class="cart-badge ms-2">3</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="theme-switch-wrapper mt-4">
+                <i class="fas fa-sun"></i>
+                <label class="theme-switch mx-2">
+                    <input type="checkbox" id="sidebar-theme-toggle">
+                    <span class="slider"></span>
+                </label>
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="#"><i class="fas fa-utensils"></i> FoodHub</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobile-sidebar" aria-controls="mobile-sidebar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                
+                    
+                    <li class="nav-item ms-lg-3">
+                        <a href="cart.html" class="nav-link p-0">
+                        <div class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-badge">3</span>
+                        </div>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item dropdown ms-3">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 1.25rem;">
+                            <i class="fas fa-user-circle"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><h6 class="dropdown-header">Welcome Back!</h6></li>
+                            <li><a class="dropdown-item" href="order-list.html"><i class="fas fa-receipt me-2"></i> My Orders</a></li>
+                            <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><a class="dropdown-item" href="logout.html"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                    </ul>
+            </div>
+        </div>
+    </nav>
+    <section class="hero pt-5"> <div class="container">
+            <h1>Discover Delicious Food, Delivered to You</h1>
+            <p>The best restaurants at your fingertips. Fast, fresh, and hassle-free.</p>
+            <div class="search-section">
+                <div class="search-input-group">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <input type="text" placeholder="Enter your delivery location">
+                    <i class="fas fa-crosshairs location-detector" title="Detect my location"></i>
+                </div>
+                <div class="search-input-group d-none d-md-flex">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search for food or restaurants">
+                </div>
+                <button class="search-btn">Find Food</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="cta-banner" class="p-4" style="background-color: var(--primary-color-light); color: var(--text-color);">
+        <div class="container text-center">
+            <div class="row align-items-center">
+                <div class="col-md-7 text-md-start">
+                    <h3 class="fw-bold mb-1">🔥 50% Off Your First Order!</h3>
+                    <p class="mb-0">Use code <span class="fw-bold" style="color: var(--primary-color);">FOODHUBNEW</span> at checkout. Limited time offer!</p>
+                </div>
+                <div class="col-md-5 text-center text-md-end mt-3 mt-md-0">
+                    <a href="#deals" class="btn btn-lg cta-banner-btn">Grab Deal Now <i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="how-it-works" class="section-padding">
+        <div class="container">
+            <h2 class="section-title text-center">How It Works</h2>
+            <div class="row text-center g-4">
+                <div class="col-md-4"><div class="step-card"><div class="step-icon"><i class="fas fa-map-location-dot"></i></div><h4>1. Set Your Location</h4><p class="text-muted">Enter your address to find restaurants near you.</p></div></div>
+                <div class="col-md-4"><div class="step-card"><div class="step-icon"><i class="fas fa-utensils"></i></div><h4>2. Choose Your Meal</h4><p class="text-muted">Browse menus and pick your favorite dishes.</p></div></div>
+                <div class="col-md-4"><div class="step-card"><div class="step-icon"><i class="fas fa-motorcycle"></i></div><h4>3. Quick Delivery</h4><p class="text-muted">Sit back and relax while we deliver your food fast.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    
+    
+    <section class="categories-section section-padding" style="background-color: var(--background-color);">
+        <div class="container">
+            <h2 class="section-title text-center">Explore by Category</h2>
+            <div class="row g-4">
+                <div class="col-6 col-md-4 col-lg-2"> <div class="category-card"> <div class="category-icon"><i class="fas fa-burger"></i></div> <h6>Burgers</h6> </div> </div>
+                <div class="col-6 col-md-4 col-lg-2"> <div class="category-card"> <div class="category-icon"><i class="fas fa-pizza-slice"></i></div> <h6>Pizza</h6> </div> </div>
+                <div class="col-6 col-md-4 col-lg-2"> <div class="category-card"> <div class="category-icon"><i class="fas fa-leaf"></i></div> <h6>Healthy</h6> </div> </div>
+                <div class="col-6 col-md-4 col-lg-2"> <div class="category-card"> <div class="category-icon"><i class="fas fa-ice-cream"></i></div> <h6>Desserts</h6> </div> </div>
+                <div class="col-6 col-md-4 col-lg-2"> <div class="category-card"> <div class="category-icon"><i class="fas fa-mug-hot"></i></div> <h6>Beverages</h6> </div> </div>
+                <div class="col-6 col-md-4 col-lg-2"> <div class="category-card"> <div class="category-icon"><i class="fas fa-pepper-hot"></i></div> <h6>Indian</h6> </div> </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <section class="trending-section section-padding">
+        <div class="container">
+            <h2 class="section-title">Popular Right Now</h2>
+            <div id="dishes-container" class="d-flex gap-3 overflow-auto pb-3">
+                <div id="dishes-skeleton" class="d-flex gap-3">
+                    <div class="dish-card skeleton-card">
+                        <div class="skeleton-image"></div>
+                        <div class="card-info">
+                            <div class="skeleton-text short"></div>
+                            <div class="skeleton-text medium"></div>
+                            <div class="skeleton-text price-line"></div>
+                            <div class="skeleton-button"></div>
+                        </div>
+                    </div>
+                    <div class="dish-card skeleton-card d-none d-md-block">
+                        <div class="skeleton-image"></div>
+                        <div class="card-info">
+                            <div class="skeleton-text short"></div>
+                            <div class="skeleton-text medium"></div>
+                            <div class="skeleton-text price-line"></div>
+                            <div class="skeleton-button"></div>
+                        </div>
+                    </div>
+                    <div class="dish-card skeleton-card d-none d-lg-block">
+                        <div class="skeleton-image"></div>
+                        <div class="card-info">
+                            <div class="skeleton-text short"></div>
+                            <div class="skeleton-text medium"></div>
+                            <div class="skeleton-text price-line"></div>
+                            <div class="skeleton-button"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <section id="restaurants" class="section-padding" style="background-color: var(--background-color);">
+        <div class="container">
+            <h2 class="section-title">Featured Restaurants</h2>
+            <div id="restaurants-container" class="d-flex gap-3 overflow-auto pb-3">
+                    <div id="restaurants-skeleton" class="d-flex gap-3">
+                        <div class="restaurant-card skeleton-card">
+                            <div class="skeleton-image"></div>
+                            <div class="card-info">
+                                <div class="skeleton-text short"></div>
+                                <div class="skeleton-text medium"></div>
+                                <div class="skeleton-text price-line"></div>
+                            </div>
+                        </div>
+                        <div class="restaurant-card skeleton-card d-none d-md-block">
+                            <div class="skeleton-image"></div>
+                            <div class="card-info">
+                                <div class="skeleton-text short"></div>
+                                <div class="skeleton-text medium"></div>
+                                <div class="skeleton-text price-line"></div>
+                            </div>
+                        </div>
+                        <div class="restaurant-card skeleton-card d-none d-lg-block">
+                            <div class="skeleton-image"></div>
+                            <div class="card-info">
+                                <div class="skeleton-text short"></div>
+                                <div class="skeleton-text medium"></div>
+                                <div class="skeleton-text price-line"></div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </section>
+    
+    
+
+    <section id="deals" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Today's Special Deals</h2>
+            <div id="deals-container" class="d-flex gap-3 overflow-auto pb-3">
+                    <div id="deals-skeleton" class="d-flex gap-3">
+                        <div class="combo-card skeleton-card">
+                            <div class="skeleton-image"></div>
+                            <div class="card-info">
+                                <div class="skeleton-text short"></div>
+                                <div class="skeleton-text medium"></div>
+                                <div class="skeleton-text price-line"></div>
+                                <div class="skeleton-button"></div>
+                            </div>
+                        </div>
+                        <div class="combo-card skeleton-card d-none d-md-block">
+                            <div class="skeleton-image"></div>
+                            <div class="card-info">
+                                <div class="skeleton-text short"></div>
+                                <div class="skeleton-text medium"></div>
+                                <div class="skeleton-text price-line"></div>
+                                <div class="skeleton-button"></div>
+                            </div>
+                        </div>
+                        <div class="combo-card skeleton-card d-none d-lg-block">
+                            <div class="skeleton-image"></div>
+                            <div class="card-info">
+                                <div class="skeleton-text short"></div>
+                                <div class="skeleton-text medium"></div>
+                                <div class="skeleton-text price-line"></div>
+                                <div class="skeleton-button"></div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </section>
+    
+    
+
+    <section id="testimonials" class="section-padding" style="background-color: var(--card-background);">
+        <div class="container">
+            <h2 class="section-title text-center">What Our Customers Say</h2>
+            <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active"><div class="testimonial-card col-md-8 mx-auto text-center"><img src="https://i.pravatar.cc/150?img=1" alt="Customer" class="testimonial-img mb-3"><p class="fst-italic">"FoodHub has been a game-changer for my busy schedule. The delivery is always on time, and the food quality is excellent. Highly recommended!"</p><h5 class="mt-3">Jessica Miller</h5><div class="text-warning"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div></div></div>
+                    <div class="carousel-item"><div class="testimonial-card col-md-8 mx-auto text-center"><img src="https://i.pravatar.cc/150?img=2" alt="Customer" class="testimonial-img mb-3"><p class="fst-italic">"I love the variety of restaurants available on FoodHub. The app is super easy to use, and the promotions are fantastic. My go-to food app!"</p><h5 class="mt-3">David Chen</h5><div class="text-warning"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div></div></div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+                <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+            </div>
+        </div>
+    </section>
+    
+    
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="app-promo text-white">
+                <div class="row align-items-center">
+                    <div class="col-lg-7 text-center text-lg-start">
+                        <h2 class="fw-bold display-5">Get The FoodHub App</h2>
+                        <p class="lead my-3">Order from anywhere, anytime. Get exclusive app-only deals and track your order in real-time. Download now!</p>
+                        <div>
+                            <a href="#" class="app-store-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" height="50"></a>
+                            <a href="#" class="app-store-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/1200px-Download_on_the_App_Store_Badge.svg.png" alt="App Store" height="50"></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 app-promo-img d-none d-lg-block">
+                        <img src="https://cdn.dribbble.com/users/4155339/screenshots/11553594/media/34685b62b1464c8d9608f7b76214554b.png" class="img-fluid" alt="App Screenshot">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <h5><i class="fas fa-utensils"></i> FoodHub</h5>
+                    <p class="text-muted">Your favorite food, delivered fast at your door.</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Quick Links</h5>
+                    <a href="#">About Us</a><br>
+                    <a href="#">Help Center</a><br>
+                    <a href="#">Privacy Policy</a>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Partner with Us</h5>
+                    <a href="restaurant-signup.html">Add Your Restaurant</a><br>
+                    <a href="rider-signup.html">Become a Delivery Rider</a><br>
+                    <a href="#">Corporate Orders</a>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Payment Partners</h5>
+                    <div class="d-flex gap-2 fs-3"><i class="fab fa-cc-visa"></i><i class="fab fa-cc-mastercard"></i><i class="fab fa-cc-paypal"></i><i class="fab fa-google-pay"></i></div>
+                </div>
+            </div>
+            <hr style="border-color: var(--border-color);">
+            <div class="text-center text-muted">
+                <p>&copy; 2025 FoodHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Theme Toggle Functionality ---
+            const themeToggles = document.querySelectorAll('#theme-toggle, #sidebar-theme-toggle');
+            const offcanvas = document.querySelector('.offcanvas');
+
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                offcanvas.setAttribute('data-bs-theme', theme === 'dark' ? 'dark' : 'light'); // Apply theme to offcanvas
+                localStorage.setItem('theme', theme);
+                // Sync both toggles
+                themeToggles.forEach(toggle => {
+                    if (toggle) {
+                        toggle.checked = (theme === 'dark');
+                    }
+                });
+            }
+
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(currentTheme);
+
+            themeToggles.forEach(toggle => {
+                toggle.addEventListener('change', function() {
+                    applyTheme(this.checked ? 'dark' : 'light');
+                });
+            });
+
+            // --- Add to Cart Functionality ---
+            function setupAddToCart() {
+                document.querySelectorAll('.add-to-cart').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault(); // Prevent navigation if within an anchor tag
+                        e.stopPropagation(); // Stop click from bubbling to the card link
+                        const badges = document.querySelectorAll('.cart-badge');
+                        badges.forEach(badge => {
+                            badge.textContent = parseInt(badge.textContent) + 1;
+                        });
+                        this.textContent = 'Added ✓';
+                        this.disabled = true;
+                        setTimeout(() => {
+                            this.textContent = 'Add to Cart';
+                            this.disabled = false;
+                        }, 1500);
+                    });
+                });
+            }
+            
+            // --- Search & Location Functionality ---
+            document.querySelector('.search-btn').addEventListener('click', () => alert('Searching for food...'));
+            document.querySelector('.location-detector').addEventListener('click', () => alert('Detecting your location...'));
+            
+            // --- DYNAMIC CONTENT LOADING (Same as original code) ---
+
+            // --- Data for Sections ---
+            const dishesData = [
+                { name: 'Premium Angus Burger', restaurant: 'Burger Palace', rating: 4.8, price: 12.99, img: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400' },
+                { name: 'Spicy Pepperoni Pizza', restaurant: 'Pizza House', rating: 4.9, price: 14.99, img: 'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400' },
+                { name: 'Chocolate Fudge Cake', restaurant: 'Sweet Dreams', rating: 4.9, price: 9.99, img: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400' },
+                { name: 'Sushi Platter', restaurant: 'Sakura Sushi', rating: 4.9, price: 22.50, img: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400' },
+                { name: 'Spicy Chicken Wings', restaurant: 'The Wing Spot', rating: 4.6, price: 13.00, img: 'https://images.unsplash.com/photo-1527477396000-e27163b481c2?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400' },
+            ];
+
+            const restaurantsData = [
+                { name: 'The Golden Spoon', cuisine: 'Italian, Pizza', rating: 4.8, deliveryTime: '25-30 min', img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400' },
+                { name: 'Spice Route', cuisine: 'Indian, Curry', rating: 4.7, deliveryTime: '30-40 min', img: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400' },
+                { name: 'Burger Queen', cuisine: 'American, Fast Food', rating: 4.6, deliveryTime: '15-20 min', img: 'https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400' },
+                { name: 'Sushi Central', cuisine: 'Japanese, Sushi', rating: 4.9, deliveryTime: '35-45 min', img: 'https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400' },
+                { name: 'Green Bowl', cuisine: 'Salads, Healthy', rating: 4.8, deliveryTime: '20-25 min', img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400' }
+            ];
+
+            const dealsData = [
+                { name: 'Family Pizza Combo', oldPrice: 25.99, newPrice: 19.99, img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400' },
+                { name: 'Burger & Fries Duo', oldPrice: 15.50, newPrice: 12.00, img: 'https://images.unsplash.com/photo-1561758033-d89a9ad46330?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400' },
+                { name: 'Two Pasta Special', oldPrice: 28.00, newPrice: 22.50, img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400' },
+                { name: 'Dessert Feast For Two', oldPrice: 18.00, newPrice: 14.99, img: 'https://images.unsplash.com/photo-1561758033-d89a9ad46330?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400' },
+                { name: 'Family Pizza Combo', oldPrice: 25.99, newPrice: 19.99, img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400' },
+
+            ];
+            
+            // --- Main Loading Simulation ---
+            setTimeout(() => {
+                const dishesContainer = document.getElementById('dishes-container');
+                const restaurantsContainer = document.getElementById('restaurants-container');
+                const dealsContainer = document.getElementById('deals-container');
+                
+                // Hide Skeletons
+                document.getElementById('dishes-skeleton').style.display = 'none';
+                document.getElementById('restaurants-skeleton').style.display = 'none';
+                document.getElementById('deals-skeleton').style.display = 'none';
+
+                // Populate Dishes
+                dishesContainer.innerHTML = dishesData.map(dish => `
+                    <div class="dish-card">
+                      <a href="product.html" style="text-decoration: none; color: inherit;">
+                        <div class="dish-image-wrapper"><img src="${dish.img}" alt="${dish.name}" class="dish-image"><div class="product-badge"><i class="fas fa-fire"></i> Trending</div></div>
+                        <div class="card-info">
+                            <h5 class="fw-bold mb-1">${dish.name}</h5><p class="text-muted small">${dish.restaurant}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold" style="color: var(--primary-color);">$${dish.price.toFixed(2)}</span>
+                                <span class="text-warning small"><i class="fas fa-star"></i> ${dish.rating}</span>
+                            </div>
+                            <button class="btn add-to-cart w-100 mt-3" style="background: var(--gradient); color: white;">Add to Cart</button>
+                        </div>
+                      </a>
+                    </div>
+                `).join('');
+
+                // Populate Restaurants
+                restaurantsContainer.innerHTML = restaurantsData.map(r => `
+                    <div class="restaurant-card">
+                        <img src="${r.img}" alt="${r.name}" class="restaurant-image">
+                        <div class="card-info">
+                            <h5 class="fw-bold mb-1">${r.name}</h5><p class="text-muted small">${r.cuisine}</p>
+                            <div class="d-flex justify-content-between align-items-center text-muted small mt-2">
+                                <span><i class="fas fa-star text-warning"></i> ${r.rating}</span>
+                                <span><i class="fas fa-motorcycle"></i> ${r.deliveryTime}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Populate Deals
+                dealsContainer.innerHTML = dealsData.map(deal => `
+                    <div class="combo-card">
+                      <a href="product.html" style="text-decoration: none; color: inherit;">
+                        <img src="${deal.img}" alt="${deal.name}" class="dish-image">
+                        <div class="card-info">
+                             <h5 class="fw-bold mb-2">${deal.name}</h5>
+                             <div class="d-flex align-items-center gap-3">
+                                 <span class="fw-bold fs-5" style="color: var(--primary-color);">$${deal.newPrice.toFixed(2)}</span>
+                                 <del class="text-muted small">$${deal.oldPrice.toFixed(2)}</del>
+                             </div>
+                             <button class="btn add-to-cart w-100 mt-3" style="background: var(--gradient); color: white;">Add to Cart</button>
+                        </div>
+                      </a>
+                    </div>
+                `).join('');
+                
+                setupAddToCart(); // Re-initialize listeners for all new buttons
+
+            }, 1500); // Simulate network delay
+        });
+    </script>
+</body>
+</html>

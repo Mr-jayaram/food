@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - FoodHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css"> 
+
+    <style>
+        /* Use a class for the main page container */
+        .settings-page-section {
+            background-color: var(--background-color-light, #f8f9fa); /* Fallback */
+            min-height: 80vh;
+            padding-top: 100px;
+        }
+
+        /* Use variables for all cards */
+        .card {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem; /* Softer corners */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            background-color: var(--card-background);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem;
+        }
+        .card-header h5 {
+            color: var(--text-color);
+        }
+
+        .card-body {
+             background-color: var(--card-background);
+             padding: 1.5rem;
+        }
+
+        /* Improved Form Styles */
+        .form-label {
+            font-weight: 500;
+            color: var(--text-color-secondary);
+        }
+
+        .form-control {
+            background-color: var(--background-color) !important;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .form-control:focus {
+            background-color: var(--background-color) !important;
+            color: var(--text-color);
+            border-color: var(--primary-color);
+            /* Assumes --primary-rgb is defined in your main CSS for the shadow */
+            box-shadow: 0 0 0 0.25rem rgba(var(--primary-rgb, 255, 107, 0), 0.25);
+        }
+        .form-control[disabled] {
+            background-color: var(--background-color-light) !important;
+            opacity: 0.7;
+        }
+
+        /* Gradient Button Style */
+        .btn-gradient {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            color: white;
+            /* Assumes --primary-rgb is defined */
+            box-shadow: 0 4px 15px rgba(var(--primary-rgb, 255, 107, 0), 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Improved Switch Styles */
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+        }
+        .settings-item-label h6 {
+            font-weight: 600;
+            margin-bottom: 0.15rem;
+            color: var(--text-color);
+        }
+        .settings-item-label p {
+            font-size: 0.9rem;
+            color: var(--text-color-secondary);
+            margin-bottom: 0;
+        }
+
+        .form-switch .form-check-input {
+            width: 3.25em;
+            height: 1.6em;
+            cursor: pointer;
+            background-color: var(--border-color);
+            border-color: var(--border-color);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+        }
+        .form-switch .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+        }
+        .form-switch .form-check-label {
+            padding-left: 1em;
+            cursor: pointer;
+        }
+        
+        /* Danger Zone Styles */
+        .card.border-danger {
+            border-width: 1px;
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.1);
+        }
+        .card.border-danger .card-header {
+            border-bottom: 1px solid #dc3545;
+        }
+        .btn-danger {
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+        }
+        .btn-outline-danger {
+            transition: all 0.3s ease;
+        }
+        .btn-outline-danger:hover {
+            transform: translateY(-2px);
+        }
+
+        hr {
+            border-top: 1px solid var(--border-color);
+            opacity: 1;
+        }
+
+    </style>
+    </head>
+<body>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="mobile-sidebar" aria-labelledby="sidebarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="sidebarLabel"><i class="fas fa-utensils"></i> FoodHub Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav flex-column">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html#restaurants">Restaurants</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html#deals">Offers</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
+                <li class="nav-item mt-3">
+                    <a href="cart.html">
+                        <div class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i> My Cart
+                            <span class="cart-badge ms-2">3</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="theme-switch-wrapper mt-4">
+                <i class="fas fa-sun"></i>
+                <label class="theme-switch mx-2">
+                    <input type="checkbox" id="sidebar-theme-toggle">
+                    <span class="slider"></span>
+                </label>
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-utensils"></i> FoodHub</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobile-sidebar" aria-controls="mobile-sidebar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    
+                    
+                    
+                    
+                    
+                    <li class="nav-item ms-lg-3">
+                        <a href="cart.html" class="nav-link p-0">
+                        <div class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-badge">3</span>
+                        </div>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item dropdown ms-3">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 1.25rem;">
+                            <i class="fas fa-user-circle"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><h6 class="dropdown-header">Welcome Back!</h6></li>
+                            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i> My Profile</a></li>
+                            <li><a class="dropdown-item" href="order-list.html"><i class="fas fa-receipt me-2"></i> My Orders</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="logout.html"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                    </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="settings-page-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Settings</h2>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+
+                    <div class="card bg-white">
+                        <div class="card-header">
+                            <h5 class="mb-0 fw-bold"><i class="fas fa-user-edit me-2"></i> Account Details</h5>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="fullName" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="fullName" value="Alex Johnson">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email" value="alex.johnson@example.com" disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone" value="+1 (555) 123-4567">
+                                </div>
+                                <button type="submit" class="btn btn-gradient">Save Changes</button>
+                                <a href="#" class="btn btn-outline-secondary ms-2">Change Password</a>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card bg-white">
+                        <div class="card-header">
+                            <h5 class="mb-0 fw-bold"><i class="fas fa-map-marker-alt me-2"></i> Address Settings</h5>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="address1" class="form-label">Address Line 1</label>
+                                    <input type="text" class="form-control" id="address1" value="123 Main St" placeholder="e.g., 123 Main St">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address2" class="form-label">Address Line 2 <span class="text-muted">(Optional)</span></label>
+                                    <input type="text" class="form-control" id="address2" value="Apt 4B" placeholder="e.g., Apt, suite, or building">
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label for="city" class="form-label">City</label>
+                                        <input type="text" class="form-control" id="city" value="Metropolis">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="state" class="form-label">State</label>
+                                        <input type="text" class="form-control" id="state" value="NY">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="zip" class="form-label">ZIP Code</label>
+                                        <input type="text" class="form-control" id="zip" value="10001">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-gradient">Save Address</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card bg-white">
+                        <div class="card-header">
+                            <h5 class="mb-0 fw-bold"><i class="fas fa-bell me-2"></i> Notification Preferences</h5>
+                        </div>
+                        <div class="card-body">
+                            
+                            <div class="settings-item">
+                                <div class="settings-item-label">
+                                    <h6>Push Notifications (App)</h6>
+                                    <p>Get real-time updates on your order status.</p>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="pushNotify" checked>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="settings-item">
+                                <div class="settings-item-label">
+                                    <h6>Email Promotions</h6>
+                                    <p>Receive exclusive deals and offers via email.</p>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="emailNotify" checked>
+                                </div>
+                            </div>
+                            
+                            <hr>
+
+                            <div class="settings-item">
+                                <div class="settings-item-label">
+                                    <h6>SMS Order Updates</h6>
+                                    <p>Get critical order alerts via text message.</p>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="smsNotify">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                
+
+                    <div class="card bg-white">
+                        <div class="card-header text-white">
+                            <h5 class="mb-0 fw-bold"><i class="fas fa-exclamation-triangle me-2"></i> Danger Zone</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted">These actions are permanent and cannot be undone.</p>
+                            <a href="logout.html" class="btn btn-outline-danger me-2">
+                                <i class="fas fa-sign-out-alt me-2"></i> Log Out
+                            </a>
+                            <a href="#" class="btn btn-danger">
+                                <i class="fas fa-trash-alt me-2"></i> Delete Account
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <h5><i class="fas fa-utensils"></i> FoodHub</h5>
+                    <p class="text-muted">Your favorite food, delivered fast at your door.</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Quick Links</h5>
+                    <a href="#">About Us</a><br>
+                    <a href="#">Help Center</a><br>
+                    <a href="#">Privacy Policy</a>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Partner with Us</h5>
+                    <a href="restaurant-signup.html">Add Your Restaurant</a><br>
+                    <a href="rider-signup.html">Become a Delivery Rider</a><br>
+                    <a href="#">Corporate Orders</a>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Payment Partners</h5>
+                    <div class="d-flex gap-2 fs-3"><i class="fab fa-cc-visa"></i><i class="fab fa-cc-mastercard"></i><i class="fab fa-cc-paypal"></i><i class="fab fa-google-pay"></i></div>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center text-muted">
+                <p>&copy; 2025 FoodHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Theme Toggle Functionality ---
+            // Updated to include the new settings-theme-toggle
+            const themeToggles = document.querySelectorAll('#theme-toggle, #sidebar-theme-toggle, #settings-theme-toggle');
+            const offcanvas = document.querySelector('.offcanvas');
+
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                if (offcanvas) {
+                    offcanvas.setAttribute('data-bs-theme', theme === 'dark' ? 'dark' : 'light'); // Apply theme to offcanvas
+                }
+                localStorage.setItem('theme', theme);
+                // Sync all toggles
+                themeToggles.forEach(toggle => {
+                    if (toggle) {
+                        toggle.checked = (theme === 'dark');
+                    }
+                });
+            }
+
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(currentTheme);
+
+            themeToggles.forEach(toggle => {
+                toggle.addEventListener('change', function() {
+                    applyTheme(this.checked ? 'dark' : 'light');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

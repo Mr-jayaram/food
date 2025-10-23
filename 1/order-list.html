@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - FoodHub</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <style>
+
+        /* ======================================= */
+        /* --- FUTURISTIC THEME VARIABLES/HELPERS --- */
+        /* ======================================= */
+        
+        /* Define your primary color variables (assuming style.css has them)
+        :root {
+            --primary-color: tomato;
+            --primary-soft: #ffece9;
+            --background-color: #ffffff;
+            --background-color-alt: #f8f9fa;
+            --text-color: #212529;
+            --text-muted: #6c757d;
+            --border-color: #e9ecef;
+            --warning: #ffc107;
+            --success: #198754;
+            --danger: #dc3545;
+            --gradient: linear-gradient(90deg, #ff6347, #ff4e50);
+        }
+        [data-theme="dark"] {
+            --background-color: #1a1a2e; 
+            --background-color-alt: #2c2c44; 
+            --text-color: #ffffff;
+            --text-muted: #b0b0c0;
+            --border-color: #3b3b5c;
+            --primary-soft: #4a4a6b;
+        }
+        */
+
+        /* --- GLOBAL BACKGROUND ELEMENT FOR "FUTURE" VIBE --- */
+        body {
+            position: relative;
+            overflow-x: hidden;
+            /* Simple background texture/pattern if desired */
+            /* background-image: radial-gradient(circle at 100% 100%, var(--background-color-alt) 10%, transparent 10%); */
+        }
+        
+        /* Subtle animated orb */
+        .animated-orb {
+            position: fixed;
+            top: 5%;
+            left: 5%;
+            width: 250px;
+            height: 250px;
+            background: rgba(255, 99, 71, 0.1); /* Primary color transparency */
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            animation: moveOrb 20s infinite alternate ease-in-out;
+        }
+        @keyframes moveOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40vw, 30vh) scale(1.1); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+
+        /* ======================================= */
+        /* --- REDESIGNED TAB NAVIGATION --- */
+        /* ======================================= */
+        .tabs-wrapper {
+            background-color: var(--background-color);
+            padding: 0.5rem;
+            border-radius: 50px;
+            display: inline-flex;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .nav-pills .nav-link {
+            color: var(--text-muted);
+            font-weight: 600;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .nav-pills .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 99, 71, 0.3);
+        }
+        .tab-content { padding-top: 1rem; }
+
+
+        /* ======================================= */
+        /* --- IMPROVED ORDER CARD WITH GLASS EFFECT --- */
+        /* ======================================= */
+        .order-card {
+            /* Background-color removed to enable glass effect on dark mode */
+            background-color: var(--background-color); 
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            
+            /* Add Glassmorphism effect in Dark Mode */
+            backdrop-filter: blur(5px);
+            background-color: rgba(255, 255, 255, 0.85); /* Light mode background */
+            
+            /* Animation */
+            opacity: 0;
+            animation: slideUpFadeIn 0.5s ease-out forwards;
+            animation-delay: var(--animation-delay, 0s); 
+        }
+
+        [data-theme="dark"] .order-card {
+            background-color: rgba(44, 44, 68, 0.7); /* Dark mode transparent background */
+            border-color: rgba(59, 59, 92, 0.5); /* Semi-transparent border */
+        }
+        
+        .order-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15); 
+        }
+        
+        .order-card-header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 1rem 1.5rem; 
+            background-color: var(--background-color-alt); 
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 1rem 1rem 0 0; /* Match card radius */
+        }
+        [data-theme="dark"] .order-card-header {
+            background-color: rgba(44, 44, 68, 0.9); /* Opaque background for header */
+        }
+
+        .order-card-body { 
+            padding: 1.5rem; 
+            display: flex; flex-direction: column; /* Stack details vertically on small screens */
+            gap: 1rem; 
+        }
+
+        .order-details-summary {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .order-meta-info {
+            flex-grow: 1;
+        }
+
+        .restaurant-name {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .delivery-estimate {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--warning);
+        }
+
+        .order-card-footer { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 1rem 1.5rem; 
+            border-top: 1px dashed var(--border-color); /* Dashed separator */
+        }
+        
+        /* Status Badges */
+        .status-badge { font-size: 0.8rem; font-weight: bold; padding: 0.4rem 0.8rem; border-radius: 50px; }
+        .status-processing { background-color: var(--warning-soft); color: var(--warning); }
+        .status-delivered { background-color: var(--success-soft); color: var(--success); }
+        .status-cancelled { background-color: var(--danger-soft); color: var(--danger); }
+
+        /* Item Preview with Counter */
+        .item-preview-stack { display: flex; align-items: center; flex-shrink: 0; }
+        .item-preview-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 3px solid var(--background-color); }
+        .item-preview-img:not(:first-child) { margin-left: -20px; }
+        .item-preview-more {
+            width: 45px; height: 45px; border-radius: 50%; margin-left: -20px;
+            background-color: var(--primary-soft); color: var(--primary-color);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 0.9rem; border: 3px solid var(--background-color);
+        }
+        
+        .order-total { font-size: 1.2rem; font-weight: bold; color: var(--primary-color); }
+        .action-btn { 
+            padding: 0.7rem 1.2rem; font-weight: bold; border-radius: 50px !important; 
+            border: none; box-shadow: 0 4px 12px rgba(255, 99, 71, 0.2); 
+            transition: transform 0.2s ease, box-shadow 0.2s ease; font-size: 0.9rem; 
+        }
+        .action-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255, 99, 71, 0.3); }
+
+        /* --- Redesigned Empty State --- */
+        .empty-state { 
+            text-align: center; padding: 4rem 1rem; 
+            border: 2px dashed var(--border-color);
+            border-radius: 1rem;
+            margin-top: 2rem;
+        }
+        .empty-state .icon-wrapper {
+            width: 80px; height: 80px; margin: 0 auto 1.5rem;
+            background-color: var(--background-color); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+        }
+        .empty-state i { font-size: 2.5rem; color: var(--primary-color); }
+        .empty-state .btn { margin-top: 1rem; }
+
+        /* Animation Keyframes */
+        @keyframes slideUpFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 767px) {
+            .order-card-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+            .order-card-body {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .order-card-footer .order-total {
+                order: -1; /* Move total to the top of the footer stack */
+            }
+            .order-card-footer .action-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="animated-orb"></div>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="mobile-sidebar" aria-labelledby="sidebarLabel">
+        <div class="offcanvas-header"><h5 class="offcanvas-title" id="sidebarLabel"><i class="fas fa-utensils"></i> FoodHub Menu</h5><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button></div>
+        <div class="offcanvas-body"><ul class="navbar-nav flex-column"><li class="nav-item"><a class="nav-link" href="index.html">Home</a></li><li class="nav-item"><a class="nav-link" href="index.html#restaurants">Restaurants</a></li><li class="nav-item"><a class="nav-link" href="index.html#deals">Offers</a></li><li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li><li class="nav-item mt-3"><div class="cart-icon"><i class="fas fa-shopping-cart"></i> My Cart<span class="cart-badge ms-2">3</span></div></li></ul><hr><div class="theme-switch-wrapper mt-4"><i class="fas fa-sun"></i><label class="theme-switch mx-2"><input type="checkbox" id="sidebar-theme-toggle"><span class="slider"></span></label><i class="fas fa-moon"></i></div></div>
+    </div>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid px-4"><a class="navbar-brand" href="index.html"><i class="fas fa-utensils"></i> FoodHub</a><button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobile-sidebar" aria-controls="mobile-sidebar"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarNav"><ul class="navbar-nav ms-auto align-items-center"><li class="nav-item"><a class="nav-link" href="index.html">Home</a></li><li class="nav-item"><a class="nav-link" href="index.html#restaurants">Restaurants</a></li><li class="nav-item"><a class="nav-link" href="index.html#deals">Offers</a></li><li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li><li class="nav-item ms-lg-3"><div class="cart-icon"><i class="fas fa-shopping-cart"></i><span class="cart-badge">3</span></div></li></ul></div></div>
+    </nav>
+    <main class="section-padding">
+        <div class="container">
+            <h1 class="fw-bold mb-4">Order History</h1> <div class="tabs-wrapper bg-white">
+                <ul class="nav nav-pills" id="orderTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="ongoing-tab" data-bs-toggle="tab" data-bs-target="#ongoing" type="button" role="tab">Ongoing (1)</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="past-tab" data-bs-toggle="tab" data-bs-target="#past" type="button" role="tab">Past Orders (2)</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tab-content" id="orderTabsContent">
+                
+                <div class="tab-pane fade show active" id="ongoing" role="tabpanel">
+                    
+                    <div class="order-card" style="--animation-delay: 0.1s;">
+                        <div class="order-card-header">
+                            <span class="order-id text-muted fw-bold">Order #FH98234</span>
+                            <span class="status-badge status-processing"><i class="fas fa-motorcycle me-2"></i>Out for Delivery</span>
+                        </div>
+                        <div class="order-card-body">
+                            <div class="order-details-summary">
+                                <div class="item-preview-stack">
+                                    <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=100" class="item-preview-img" alt="Item 1">
+                                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=100" class="item-preview-img" alt="Item 2">
+                                </div>
+                                <div class="order-meta-info">
+                                    <span class="restaurant-name">From The Burger Hub</span>
+                                    <p class="mb-0 fw-bold">Premium Angus Burger + 1 more item</p>
+                                    <span class="delivery-estimate">Est. arrival: 12:55 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-card-footer">
+                            <span class="text-muted small">Placed: Today at 12:30 PM</span>
+                            <span class="order-total">$47.97</span>
+                            <a href="track-order.html" class="btn action-btn" style="background: var(--gradient); color: white;">Track Order</a>
+                        </div>
+                    </div>
+
+                    </div>
+
+                <div class="tab-pane fade" id="past" role="tabpanel">
+                    
+                    <div class="order-card" style="--animation-delay: 0.1s;">
+                        <div class="order-card-header">
+                            <span class="order-id text-muted fw-bold">Order #FH98112</span>
+                            <span class="status-badge status-delivered"><i class="fas fa-check-circle me-2"></i>Delivered</span>
+                        </div>
+                        <div class="order-card-body">
+                            <div class="order-details-summary">
+                                <div class="item-preview-stack">
+                                    <img src="https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=100" class="item-preview-img" alt="Item 1">
+                                </div>
+                                <div class="order-meta-info">
+                                    <span class="restaurant-name">From The Sushi Palace</span>
+                                    <p class="mb-0 fw-bold">Sushi Platter (1 Item)</p>
+                                    <span class="text-success small">Delivered in 35 mins</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-card-footer">
+                            <span class="text-muted small">Delivered: Yesterday at 7:45 PM</span>
+                            <span class="order-total">$22.50</span>
+                            <a href="#" class="btn action-btn" style="background: var(--gradient); color: white;">Reorder</a>
+                        </div>
+                    </div>
+
+                    <div class="order-card" style="--animation-delay: 0.2s;">
+                        <div class="order-card-header">
+                            <span class="order-id text-muted fw-bold">Order #FH98056</span>
+                            <span class="status-badge status-cancelled"><i class="fas fa-times-circle me-2"></i>Cancelled</span>
+                        </div>
+                        <div class="order-card-body">
+                            <div class="order-details-summary">
+                                <div class="item-preview-stack">
+                                    <img src="https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=100" class="item-preview-img" alt="Item 1">
+                                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=100" class="item-preview-img" alt="Item 2">
+                                    <div class="item-preview-more">+1</div>
+                                </div>
+                                <div class="order-meta-info">
+                                    <span class="restaurant-name">From Spicy Grill House</span>
+                                    <p class="mb-0 fw-bold">Spicy Chicken Wings + 2 more items</p>
+                                    <span class="text-danger small">Cancelled by Restaurant</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-card-footer">
+                            <span class="text-muted small">Attempted: 3 days ago</span>
+                            <span class="order-total text-muted"><del>$31.50</del></span>
+                            <a href="#" class="btn btn-outline-secondary" style="border-radius: 50px; font-weight: bold; font-size: 0.9rem;">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer><div class="container"><div class="row"><div class="col-md-3 mb-4"><h5><i class="fas fa-utensils"></i> FoodHub</h5><p class="text-muted">Your favorite food, delivered fast at your door.</p></div><div class="col-md-3 mb-4"><h5>Quick Links</h5><a href="#">About Us</a><br><a href="#">Help Center</a><br><a href="#">Privacy Policy</a></div><div class="col-md-3 mb-4"><h5>Follow Us</h5><a href="#"><i class="fab fa-facebook me-2"></i> Facebook</a><br><a href="#"><i class="fab fa-twitter me-2"></i> Twitter</a><br><a href="#"><i class="fab fa-instagram me-2"></i> Instagram</a></div><div class="col-md-3 mb-4"><h5>Payment Partners</h5><div class="d-flex gap-2 fs-3"><i class="fab fa-cc-visa"></i><i class="fab fa-cc-mastercard"></i><i class="fab fa-cc-paypal"></i><i class="fab fa-google-pay"></i></div></div></div><hr style="border-color: #555;"><div class="text-center text-muted"><p>&copy; 2025 FoodHub. All rights reserved.</p></div></div></footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme Toggle Logic
+            const themeToggles = document.querySelectorAll('#theme-toggle, #sidebar-theme-toggle');
+            const offcanvas = document.querySelector('.offcanvas');
+            function applyTheme(theme) { document.documentElement.setAttribute('data-theme', theme); offcanvas.setAttribute('data-bs-theme', theme); localStorage.setItem('theme', theme); themeToggles.forEach(t => t.checked = (theme === 'dark')); }
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(currentTheme);
+            themeToggles.forEach(t => t.addEventListener('change', function() { applyTheme(this.checked ? 'dark' : 'light'); }));
+        });
+    </script>
+</body>
+
+</html>

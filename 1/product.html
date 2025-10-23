@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Angus Burger - FoodHub</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* --- Keyframe Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shimmer { 
+            0% { background-position: -468px 0; } 
+            100% { background-position: 468px 0; } 
+        }
+
+        /* --- General Style Enhancements --- */
+        :root {
+            --primary-color: #ff6347; /* Tomato */
+            --primary-color-rgb: 255, 99, 71;
+            --background-color: #f5f5f5;
+            --background-color-alt: #f8f9fa;
+            --border-color: #e9ecef;
+            --text-color: #212529;
+            --text-muted: #6c757d;
+            --gradient: #ff6347;
+        }
+
+       
+
+        .section-padding {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+            font-size: 1.75rem;
+            color: var(--text-color);
+        }
+
+        .main-content-wrapper {
+            /* background-color: var(--background-color); */
+            border-radius: 1.5rem;
+            padding: 2rem;
+            /* box-shadow: 0 15px 40px rgba(0,0,0,0.05); */
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        /* Improved Focus States for Accessibility */
+        :focus-visible {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+        
+        /* Utility for Gradient Button */
+        .btn-primary-gradient {
+            background: var(--gradient) !important; 
+            color: white !important; 
+            border: none !important;
+        }
+
+        /* ===== Image Gallery Styles ===== */
+        .main-image-container { border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); margin-bottom: 1rem; }
+        .main-product-image { 
+            width: 100%; 
+            height: auto; 
+            aspect-ratio: 16 / 9; 
+            object-fit: cover; 
+            border-radius: 1rem; 
+            display: block; 
+            transition: transform 0.4s ease, opacity 0.3s ease-in-out; 
+        }
+        .main-image-container:hover .main-product-image { transform: scale(1.1); }
+        .thumbnail-gallery { display: flex; gap: 1rem; justify-content: center; }
+        .thumbnail-item { width: 80px; height: 80px; border-radius: 0.75rem; cursor: pointer; overflow: hidden; border: 3px solid transparent; transition: all 0.3s ease; opacity: 0.6; }
+        .thumbnail-item img { width: 100%; height: 100%; object-fit: cover; }
+        .thumbnail-item:hover { transform: scale(1.05) translateY(-3px); opacity: 1; }
+        .thumbnail-item.active { border-color: var(--primary-color); opacity: 1; transform: scale(1.05); }
+
+        /* --- Daily Deal Countdown Timer --- */
+        .deal-countdown-banner {
+            background: linear-gradient(45deg, var(--primary-color), #ff7e5f);
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(255, 99, 71, 0.3);
+        }
+        .deal-countdown-banner i { margin-right: 0.5rem; }
+        #countdown-timer span { font-weight: bold; font-size: 1.2em; min-width: 3ch; display: inline-block; }
+
+        /* --- Delivery Estimator --- */
+        .delivery-estimator {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border: 1px dashed var(--border-color);
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+        #delivery-time-result { font-weight: bold; color: var(--primary-color); }
+        
+        /* --- Product Customization --- */
+        .customization-section { border-top: 1px solid var(--border-color); margin-top: 1.5rem; padding-top: 1.5rem; }
+        .form-check-label .price-tag { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+        .form-check-input:checked { background-color: var(--primary-color); border-color: var(--primary-color); }
+        .form-select:focus, .form-check-input:focus { box-shadow: 0 0 0 0.25rem rgba(var(--primary-color-rgb), 0.25); }
+
+        /* --- Interactive Elements (Quantity & Button) --- */
+        .actions-wrapper { background-color: var(--background-color-alt); padding: 1.5rem; border-radius: 1rem; margin-top: auto; }
+        .quantity-selector { display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: 50px; background-color: var(--background-color); padding: 0.25rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.04); }
+        .quantity-selector button { background: transparent; border: none; font-size: 1.5rem; font-weight: 300; width: 45px; height: 45px; color: var(--text-color); border-radius: 50%; transition: all 0.2s ease; }
+        .quantity-selector button:hover { background-color: var(--primary-color); color: white; }
+        .quantity-selector input { width: 50px; text-align: center; border: none; background: transparent; font-weight: bold; font-size: 1.2rem; color: var(--text-color); }
+        .add-to-cart-main { 
+            padding: 0.8rem 1.5rem; 
+            font-size: 1.1rem; 
+            font-weight: bold; 
+            border-radius: 50px !important; 
+            border: none; 
+            box-shadow: 0 5px 15px rgba(255, 99, 71, 0.3); 
+            transition: transform 0.2s ease, box-shadow 0.2s ease; 
+        }
+        .add-to-cart-main:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 20px rgba(255, 99, 71, 0.4); 
+        }
+
+        /* --- Tabs and Reviews Section --- */
+        .nav-tabs .nav-link.active { color: var(--primary-color); background-color: transparent; border-color: var(--primary-color) !important; }
+        
+        /* Nutrition Table Styles */
+        .nutrition-table { width: 100%; max-width: 400px; }
+        .nutrition-table td { padding: 0.75rem; border-bottom: 1px solid var(--border-color); }
+        .nutrition-table tr:last-child td { border-bottom: none; }
+        .nutrition-table td:last-child { font-weight: bold; text-align: right; }
+        .nutrition-header { background-color: var(--background-color-alt); font-weight: bold; }
+        .nutrition-header td { font-size: 1.1rem; border-bottom: 3px double var(--border-color) !important; }
+
+        /* Review Styles */
+        .review-card { padding: 1rem; border: 1px solid var(--border-color); border-radius: 0.75rem; margin-bottom: 1.5rem; }
+        .review-rating-stars { color: #ffc107; }
+        .star-rating-input { display: flex; flex-direction: row-reverse; justify-content: flex-end; }
+        .star-rating-input input { display: none; }
+        .star-rating-input label { font-size: 1.5rem; color: #ccc; cursor: pointer; transition: color 0.2s; }
+        .star-rating-input input:checked ~ label, .star-rating-input label:hover, .star-rating-input label:hover ~ label { color: #ffc107; }
+
+        /* --- Recommendation Sections (dish-card styles) --- */
+        .dish-card {
+            min-width: 250px;
+            max-width: 250px;
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            overflow: hidden;
+            background-color: var(--background-color);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            position: relative;
+        }
+
+        /* Adjust dish-card style for the "People Also Bought" row where it uses a grid */
+        #people-also-bought-container .dish-card {
+            min-width: 0;
+            max-width: none;
+            margin-bottom: 1rem; /* Added for vertical spacing in a grid */
+        }
+
+        .dish-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+        .dish-image-wrapper {
+            position: relative;
+            height: 150px;
+            overflow: hidden;
+        }
+        .dish-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .card-info { padding: 1rem; }
+
+        .dish-card .quick-view-btn { 
+            position: absolute; 
+            top: 10px; 
+            right: 10px; 
+            background-color: rgba(0,0,0,0.6); 
+            color: white; 
+            border: none; 
+            border-radius: 50%; 
+            width: 35px; 
+            height: 35px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            opacity: 0; 
+            transform: scale(0.8); 
+            transition: all 0.25s ease; 
+        }
+        .dish-card:hover .quick-view-btn { opacity: 1; transform: scale(1); }
+        .trending-section{ background-color: var(--background-color-alt); }
+        /* Skeleton Loader Styles */
+        .skeleton { animation: shimmer 1.5s linear infinite; background: linear-gradient(to right, #f6f7f8 4%, #edeef1 25%, #f6f7f8 36%); background-size: 800px 104px; border-radius: 0.5rem; }
+        .skeleton-image { height: 150px; }
+        .skeleton-text { height: 20px; margin: 10px 0; }
+        .skeleton-price { height: 24px; width: 50%; }
+
+    </style>
+</head>
+<body>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="mobile-sidebar" aria-labelledby="sidebarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="sidebarLabel"><i class="fas fa-utensils"></i> FoodHub Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav flex-column">
+                <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#restaurants">Restaurants</a></li>
+                <li class="nav-item"><a class="nav-link" href="#deals">Offers</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                <li class="nav-item mt-3">
+                    <a href="cart.html">
+                        <div class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i> My Cart
+                            <span class="cart-badge ms-2">3</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <div class="theme-switch-wrapper mt-4">
+                <i class="fas fa-sun"></i>
+                <label class="theme-switch mx-2">
+                    <input type="checkbox" id="sidebar-theme-toggle">
+                    <span class="slider"></span>
+                </label>
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="#"><i class="fas fa-utensils"></i> FoodHub</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobile-sidebar" aria-controls="mobile-sidebar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#restaurants">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#deals">Offers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a href="cart.html">
+                        <div class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-badge">3</span>
+                        </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main class="section-padding bg-white">
+        <div class="container">
+            
+
+            <div class="main-content-wrapper">
+                <div class="row g-5">
+                    <div class="col-lg-6">
+                        <div class="image-gallery-container">
+                            <div class="main-image-container">
+                                <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=800" alt="Premium Angus Burger - Main View" class="main-product-image" id="main-product-image">
+                            </div>
+                            <div class="thumbnail-gallery">
+                                <div class="thumbnail-item active"><img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200" alt="Angus Burger Thumbnail 1"></div>
+                                <div class="thumbnail-item"><img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200" alt="Angus Burger Thumbnail 2"></div>
+                                <div class="thumbnail-item"><img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200" alt="Angus Burger Thumbnail 3"></div>
+                                <div class="thumbnail-item"><img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200" alt="Angus Burger Thumbnail 4"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="product-details-card d-flex flex-column h-100">
+
+                            <div>
+                                <p class="text-muted mb-2">From <a href="#">Burger Palace</a></p>
+                                <h1 class="fw-bold display-5">Premium Angus Burger</h1>
+                                <div class="d-flex align-items-center my-3">
+                                    <div class="text-warning"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                                    <a href="#reviews" class="ms-2 text-muted text-decoration-none">(125 reviews)</a>
+                                </div>
+                                <p class="lead text-muted">A masterpiece of flavor. Our signature burger features a 1/2 lb juicy Angus beef patty, aged cheddar cheese, crispy bacon, and our secret house sauce.</p>
+                            </div>
+
+                        
+                            <div class="actions-wrapper mt-4" id="main-actions-wrapper">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="mb-0">Choose Quantity</h5>
+                                    <div class="product-price fs-1" id="total-price" data-base-price="12.99">$12.99</div>
+                                </div>
+                                <div class="d-md-flex align-items-center gap-3">
+                                    <div class="quantity-selector">
+                                        <button id="decrease-qty" aria-label="Decrease quantity">-</button>
+                                        <input type="text" id="quantity" value="1" readonly>
+                                        <button id="increase-qty" aria-label="Increase quantity">+</button>
+                                    </div>
+                                    <button class="btn btn-lg w-100 add-to-cart-main btn-primary-gradient mt-3 mt-md-0"><i class="fas fa-shopping-cart me-2"></i> Add to Cart</button>
+                                </div>
+                            </div>
+                            
+                            <div class="delivery-estimator">
+                                <i class="fas fa-motorcycle me-2"></i>
+                                Get it delivered! Estimated arrival: 
+                                <span id="delivery-time-result">Calculating...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5 pt-4 bg-white">
+                    <ul class="nav nav-tabs bg-white" id="productTab" role="tablist">
+                        <li class="nav-item" role="presentation"><button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">Description & Nutrition</button></li>
+                        <li class="nav-item" role="presentation"><button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews (125)</button></li>
+                    </ul>
+                    <div class="tab-content p-4 bg-white" id="productTabContent">
+                        <div class="tab-pane fade show active" id="description" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-6 mb-4 mb-lg-0">
+                                    <h4 class="mb-3">Product Description</h4>
+                                    <p>Indulge in the ultimate burger experience. Our <strong>Premium Angus Burger</strong> is meticulously crafted with a 1/2 lb patty made from <strong>100% certified Angus beef</strong>, known for its rich marbling and superior flavor. Served on a freshly baked brioche bun with crisp lettuce, vine-ripened tomatoes, and a generous slice of aged cheddar cheese.</p>
+                                    <p class="fw-bold">Ingredients: Angus Beef, Brioche Bun, Aged Cheddar, House Sauce, Lettuce, Tomato, Bacon. <em>Contains dairy and wheat.</em></p>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h4 class="mb-3">Nutrition Facts (Per Serving)</h4>
+                                    <table class="nutrition-table table table-sm">
+                                        <tr class="nutrition-header"><td colspan="2">Amount Per Serving</td></tr>
+                                        <tr><td>Calories</td><td>750 kcal</td></tr>
+                                        <tr><td>Total Fat</td><td>45g</td></tr>
+                                        <tr><td>Saturated Fat</td><td>18g</td></tr>
+                                        <tr><td>Cholesterol</td><td>150mg</td></tr>
+                                        <tr><td>Sodium</td><td>850mg</td></tr>
+                                        <tr><td>Total Carbohydrates</td><td>45g</td></tr>
+                                        <tr><td>Dietary Fiber</td><td>3g</td></tr>
+                                        <tr><td>Protein</td><td>40g</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="reviews" role="tabpanel">
+                        </div>
+                    </div>
+                </div>
+
+            
+            </div>
+
+            
+        </div>
+    </main>
+    
+    
+
+    <section class="trending-section section-padding pt-5">
+        <div class="container">
+            <h2 class="section-title">You Might Also Like</h2>
+            <div id="dishes-container" class="d-flex gap-3 overflow-auto pb-3">
+            </div>
+        </div>
+    </section>
+
+
+    
+    <div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6"><img id="modal-product-image" src="" class="img-fluid rounded" alt="Product Image"></div>
+                        <div class="col-md-6 d-flex flex-column">
+                            <h2 id="modal-product-name"></h2>
+                            <p class="product-price fs-2" id="modal-product-price"></p>
+                            <p class="text-muted" id="modal-product-desc"></p>
+                            <button class="btn btn-lg w-100 mt-auto add-to-cart-main btn-primary-gradient"><i class="fas fa-shopping-cart me-2"></i> Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+    <footer id="contact">
+        <div class="container"><div class="row"><div class="col-md-3 mb-4"><h5><i class="fas fa-utensils"></i> FoodHub</h5><p class="text-muted">Your favorite food, delivered fast at your door.</p></div><div class="col-md-3 mb-4"><h5>Quick Links</h5><a href="#">About Us</a><br><a href="#">Help Center</a><br><a href="#">Privacy Policy</a></div><div class="col-md-3 mb-4"><h5>Follow Us</h5><a href="#"><i class="fab fa-facebook me-2"></i> Facebook</a><br><a href="#"><i class="fab fa-twitter me-2"></i> Twitter</a><br><a href="#"><i class="fab fa-instagram me-2"></i> Instagram</a></div><div class="col-md-3 mb-4"><h5>Payment Partners</h5><div class="d-flex gap-2 fs-3"><i class="fab fa-cc-visa"></i><i class="fab fa-cc-mastercard"></i><i class="fab fa-cc-paypal"></i><i class="fab fa-google-pay"></i></div></div></div><hr style="border-color: #555;"><div class="text-center text-muted"><p>&copy; 2025 FoodHub. All rights reserved.</p></div></div>
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- Configuration Data ---
+            const config = {
+                basePrice: 12.99,
+                complementaryItems: [
+                    { name: 'Loaded Fries', price: 6.50, img: 'https://images.unsplash.com/photo-1598679253544-2c97992403ea?w=400', desc: 'Crispy fries loaded with cheese, bacon, and chives.' },
+                    { name: 'Craft Cola', price: 3.00, img: 'https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400', desc: 'An artisanal soda with a unique flavor profile.' },
+                    { name: 'Onion Rings', price: 5.00, img: 'https://images.unsplash.com/photo-1549007953-2f2dc0b24019?w=400', desc: 'Thick-cut, perfectly battered, and golden-fried onion rings.' },
+                    { name: 'Chocolate Milkshake', price: 7.00, img: 'https://images.unsplash.com/photo-1624726175512-19b9baf9fbd1?w=400', desc: 'Rich and creamy milkshake, topped with whipped cream.' }
+                ],
+                youMightAlsoLike: [
+                    { name: 'Spicy Chicken Wings', price: 13.00, img: 'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=400', desc: 'Crispy, spicy wings tossed in our signature buffalo sauce.' },
+                    { name: 'Vegetarian Delight', price: 10.50, img: 'https://images.unsplash.com/photo-1550905581-cd5438847683?w=400', desc: 'A savory patty made from black beans and mushrooms.' },
+                    { name: 'BBQ Pulled Pork Sandwich', price: 14.50, img: 'https://images.unsplash.com/photo-1574960550410-60b543793739?w=400', desc: 'Slow-cooked pulled pork smothered in tangy BBQ sauce.' },
+                    { name: 'Caesar Side Salad', price: 4.50, img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400', desc: 'Fresh romaine lettuce, croutons, and parmesan with Caesar dressing.' }
+                ],
+                mockReviews: [
+                    { user: "BurgerLover88", rating: 5, date: "2 days ago", comment: "The best Angus burger I've ever had! Juicy, flavorful, and the bacon was perfectly crisp. A must-try." },
+                    { user: "FoodieFanatic", rating: 4, date: "5 days ago", comment: "Great quality for the price. The patty was cooked exactly medium-rare. Only wish the bun was slightly less toasted." },
+                    { user: "FirstTimer", rating: 5, date: "1 week ago", comment: "Absolute perfection. Worth every penny, especially with the extra cheese add-on. Will order again!" },
+                    { user: "SarahK", rating: 4, date: "2 weeks ago", comment: "Really solid burger. The house sauce is amazing! Delivery was also surprisingly fast." },
+                    { user: "MikeP", rating: 3, date: "3 weeks ago", comment: "It was good, but not 'premium' for the price. A bit greasy for my liking, but the fries were excellent." }
+                ]
+            };
+
+            // --- DOM Elements ---
+            const quantityInput = document.getElementById('quantity');
+            const totalPriceEl = document.getElementById('total-price');
+            const customizationOptions = document.getElementById('customization-options');
+            const decreaseQtyBtn = document.getElementById('decrease-qty');
+            const increaseQtyBtn = document.getElementById('increase-qty');
+            const countdownEl = document.getElementById('countdown-timer');
+            const deliveryResultEl = document.getElementById('delivery-time-result');
+            const quickViewModal = new bootstrap.Modal(document.getElementById('quickViewModal'));
+            const peopleAlsoBoughtContainer = document.getElementById('people-also-bought-container');
+            const dishesContainer = document.getElementById('dishes-container');
+
+            // Set the base price attribute on load
+            totalPriceEl.setAttribute('data-base-price', config.basePrice);
+
+            // ## Price Calculation Logic
+            const updateTotalPrice = () => {
+                const quantity = parseInt(quantityInput.value) || 1;
+                let addonsTotal = 0;
+                
+                // Use Array.from for clean iteration over NodeList
+                Array.from(document.querySelectorAll('.addon-checkbox:checked')).forEach(checkbox => {
+                    addonsTotal += parseFloat(checkbox.value);
+                });
+                
+                const currentBurgerPrice = config.basePrice + addonsTotal;
+                const finalPrice = currentBurgerPrice * quantity;
+                
+                totalPriceEl.textContent = `$${finalPrice.toFixed(2)}`;
+            };
+
+            // Event Listeners for Price Update
+            // Using event delegation for customization options
+            if (customizationOptions) {
+                customizationOptions.addEventListener('change', (e) => {
+                    if (e.target.matches('.addon-checkbox')) {
+                        updateTotalPrice();
+                    }
+                });
+            }
+
+            decreaseQtyBtn.addEventListener('click', () => { 
+                if (parseInt(quantityInput.value) > 1) { 
+                    quantityInput.value--; 
+                    updateTotalPrice(); 
+                } 
+            });
+
+            increaseQtyBtn.addEventListener('click', () => { 
+                quantityInput.value++; 
+                updateTotalPrice(); 
+            });
+
+            // Initialize the price display
+            updateTotalPrice(); 
+
+            // ## Countdown Timer
+            if (countdownEl) {
+                const updateCountdown = () => {
+                    const now = new Date();
+                    // End of today's deal (midnight)
+                    const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+                    let diff = midnight - now;
+
+                    if (diff <= 0) {
+                        countdownEl.innerHTML = "Deal has ended!";
+                        clearInterval(countdownInterval);
+                        return;
+                    }
+                    
+                    const hours = Math.floor((diff / (1000 * 60 * 60)));
+                    diff -= hours * (1000 * 60 * 60);
+                    const minutes = Math.floor((diff / (1000 * 60)));
+                    diff -= minutes * (1000 * 60);
+                    const seconds = Math.floor((diff / 1000));
+                    
+                    countdownEl.innerHTML = `<span>${String(hours).padStart(2, '0')}</span>h <span>${String(minutes).padStart(2, '0')}</span>m <span>${String(seconds).padStart(2, '0')}</span>s`;
+                };
+
+                const countdownInterval = setInterval(updateCountdown, 1000);
+                updateCountdown(); // Run immediately to avoid 1s delay
+            }
+
+            // ## Delivery Estimator
+            if (deliveryResultEl) {
+                setTimeout(() => {
+                    const now = new Date();
+                    // Logic for a delivery window between 30 and 60 minutes
+                    const minDeliveryTime = 30; 
+                    const maxDeliveryTime = 60; 
+                    const deliveryMinutes = Math.floor(Math.random() * (maxDeliveryTime - minDeliveryTime + 1)) + minDeliveryTime;
+                    
+                    const arrivalTime = new Date(now.getTime() + deliveryMinutes * 60000);
+                    const arrivalTimeString = arrivalTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    deliveryResultEl.textContent = `by ${arrivalTime.toLocaleDateString('en-US', {weekday: 'short'})} ${arrivalTimeString}`;
+                }, 1500);
+            }
+            
+            // ## Quick View Modal Functions
+            const showQuickViewModal = (item) => {
+                document.getElementById('modal-product-image').src = item.img;
+                document.getElementById('modal-product-name').textContent = item.name;
+                document.getElementById('modal-product-price').textContent = `$${item.price.toFixed(2)}`;
+                document.getElementById('modal-product-desc').textContent = item.desc;
+                quickViewModal.show();
+            };
+
+            // Universal Card Generator
+            const createDishCard = (item, hasQuickView = false, isCol = false) => {
+                const cardClass = isCol ? 'col-md-6 col-lg-3' : '';
+                const element = document.createElement('div');
+                element.className = `${cardClass} dish-card`;
+                element.dataset.name = item.name;
+                element.dataset.price = item.price.toFixed(2);
+                element.dataset.img = item.img;
+                element.dataset.desc = item.desc;
+
+                element.innerHTML = `
+                    <div class="dish-image-wrapper">
+                        <img src="${item.img}" alt="${item.name}" class="dish-image">
+                        ${hasQuickView ? '<button class="quick-view-btn" title="Quick View" aria-label="Quick View"><i class="fas fa-eye"></i></button>' : ''}
+                    </div>
+                    <div class="card-info">
+                        <h5 class="fw-bold mb-1">${item.name}</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold" style="color: var(--primary-color);">$${item.price.toFixed(2)}</span>
+                        </div>
+                        <button class="btn add-to-cart w-100 mt-3 add-to-cart-main btn-primary-gradient">Add to Cart</button>
+                    </div>
+                `;
+                
+                // Attach event listener for the Quick View button if it exists
+                if (hasQuickView) {
+                    element.querySelector('.quick-view-btn').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        showQuickViewModal(item);
+                    });
+                }
+
+                return element;
+            };
+
+            // Function to generate the HTML for a star rating
+            const getStarHtml = (rating) => {
+                const fullStars = Math.floor(rating);
+                const hasHalf = rating % 1 !== 0;
+                let html = '<div class="text-warning">';
+                for(let i = 0; i < 5; i++) {
+                    if (i < fullStars) {
+                        html += '<i class="fas fa-star"></i>';
+                    } else if (i === fullStars && hasHalf) {
+                        html += '<i class="fas fa-star-half-alt"></i>';
+                    } else {
+                        html += '<i class="far fa-star"></i>';
+                    }
+                }
+                html += '</div>';
+                return html;
+            };
+            
+            // ## "You Might Also Like" Dynamic Loading
+            if (dishesContainer) {
+                dishesContainer.innerHTML = '';
+                config.youMightAlsoLike.forEach(item => {
+                    // Pass true for hasQuickView
+                    const card = createDishCard(item, true); 
+                    dishesContainer.appendChild(card);
+                });
+            }
+
+            // ## "People Also Bought" Dynamic Loading (with skeleton loader simulation)
+            const populatePeopleAlsoBought = () => {
+                if (!peopleAlsoBoughtContainer) return; // Guard clause if element doesn't exist
+                peopleAlsoBoughtContainer.innerHTML = ''; // Clear skeletons
+                config.complementaryItems.forEach(item => {
+                    // Pass false for hasQuickView and true for isCol (to use Bootstrap grid)
+                    const card = createDishCard(item, false, true); 
+                    peopleAlsoBoughtContainer.appendChild(card);
+                });
+            };
+
+            if (peopleAlsoBoughtContainer) {
+                setTimeout(populatePeopleAlsoBought, 1500); // Wait 1.5s to show loading effect
+            } else {
+                // If the container doesn't exist on this page, run immediately (or not at all)
+                // In this case, it doesn't exist, so this logic won't run.
+            }
+
+            // ## Image Gallery Thumbnail Switching
+            const mainProductImage = document.getElementById('main-product-image');
+            document.querySelectorAll('.thumbnail-item').forEach(thumbnail => {
+                thumbnail.addEventListener('click', () => {
+                    // Update main image, replacing 'w=200' with 'w=800' for the main display
+                    const newSrc = thumbnail.querySelector('img').src.replace('w=200', 'w=800'); 
+                    mainProductImage.src = newSrc;
+
+                    // Update active state
+                    document.querySelector('.thumbnail-item.active').classList.remove('active');
+                    thumbnail.classList.add('active');
+                });
+            });
+
+            // ## Tab Content Population
+            
+            // --- MODIFICATION: Removed the JavaScript injection for the 'description' tab ---
+            // The content is now directly in the HTML file.
+
+
+            // 2. Reviews Tab
+            const populateReviews = () => {
+                let reviewsHtml = '<div class="row">';
+                
+                // Review Submission Form (always present)
+                reviewsHtml += `
+                    <div class="col-lg-5 mb-5">
+                        <h4 class="mb-3">Write Your Review</h4>
+                        <form id="review-submission-form">
+                            <div class="mb-3">
+                                <label class="form-label">Your Rating</label>
+                                <div class="star-rating-input">
+                                    <input type="radio" id="star5" name="rating" value="5" required /><label for="star5" title="5 stars"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star"><i class="fas fa-star"></i></label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="reviewName" class="form-label">Your Name</label>
+                                <input type="text" class="form-control" id="reviewName" placeholder="e.g., Jane Doe" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="reviewComment" class="form-label">Your Comment</label>
+                                <textarea class="form-control" id="reviewComment" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary-gradient w-100">Submit Review</button>
+                        </form>
+                    </div>
+                `;
+
+                // Reviews List
+                reviewsHtml += `<div class="col-lg-7">
+                                    <h4 class="mb-3">Customer Reviews (${config.mockReviews.length} shown)</h4>`;
+                
+                config.mockReviews.forEach(review => {
+                    reviewsHtml += `
+                        <div class="review-card">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="mb-0 fw-bold">${review.user}</h6>
+                                <small class="text-muted">${review.date}</small>
+                            </div>
+                            ${getStarHtml(review.rating)}
+                            <p class="mt-2 mb-0">${review.comment}</p>
+                        </div>
+                    `;
+                });
+
+                reviewsHtml += '</div></div>'; // Close col-lg-7 and row
+                
+                document.getElementById('reviews').innerHTML = reviewsHtml;
+
+                // Handle form submission (prevent default)
+                document.getElementById('review-submission-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert("Thank you for your review! (Submission functionality is mocked.)");
+                    this.reset();
+                });
+            };
+
+            populateReviews();
+
+        });
+    </script>
+</body>
+</html>
