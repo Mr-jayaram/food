@@ -27,12 +27,10 @@
             --border-color: #e9ecef;
             --text-color: #212529;
             --text-muted: #6c757d;
-            --gradient: linear-gradient(45deg, #ff6347, #ff9500);
+            --gradient: #ff6347;
         }
 
-        body {
-            background-color: var(--background-color-alt);
-        }
+       
 
         .section-padding {
             padding-top: 3rem;
@@ -50,7 +48,7 @@
             background-color: var(--background-color);
             border-radius: 1.5rem;
             padding: 2rem;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+            /* box-shadow: 0 15px 40px rgba(0,0,0,0.05); */
             animation: fadeIn 0.8s ease-out forwards;
         }
 
@@ -70,7 +68,15 @@
 
         /* ===== Image Gallery Styles ===== */
         .main-image-container { border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); margin-bottom: 1rem; }
-        .main-product-image { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 1rem; display: block; transition: transform 0.4s ease, opacity 0.3s ease-in-out; }
+        .main-product-image { 
+            width: 100%; 
+            height: auto; 
+            aspect-ratio: 16 / 9; 
+            object-fit: cover; 
+            border-radius: 1rem; 
+            display: block; 
+            transition: transform 0.4s ease, opacity 0.3s ease-in-out; 
+        }
         .main-image-container:hover .main-product-image { transform: scale(1.1); }
         .thumbnail-gallery { display: flex; gap: 1rem; justify-content: center; }
         .thumbnail-item { width: 80px; height: 80px; border-radius: 0.75rem; cursor: pointer; overflow: hidden; border: 3px solid transparent; transition: all 0.3s ease; opacity: 0.6; }
@@ -200,7 +206,7 @@
             transition: all 0.25s ease; 
         }
         .dish-card:hover .quick-view-btn { opacity: 1; transform: scale(1); }
-        
+        .trending-section{ background-color: var(--background-color-alt); }
         /* Skeleton Loader Styles */
         .skeleton { animation: shimmer 1.5s linear infinite; background: linear-gradient(to right, #f6f7f8 4%, #edeef1 25%, #f6f7f8 36%); background-size: 800px 104px; border-radius: 0.5rem; }
         .skeleton-image { height: 150px; }
@@ -211,7 +217,6 @@
 </head>
 <body>
 
-      <!-- Offcanvas Sidebar for Mobile -->
     <div class="offcanvas offcanvas-start" tabindex="-1" id="mobile-sidebar" aria-labelledby="sidebarLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="sidebarLabel"><i class="fas fa-utensils"></i> FoodHub Menu</h5>
@@ -244,11 +249,9 @@
         </div>
     </div>
 
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid px-4">
             <a class="navbar-brand" href="#"><i class="fas fa-utensils"></i> FoodHub</a>
-            <!-- MODIFIED: Button now targets the offcanvas sidebar -->
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobile-sidebar" aria-controls="mobile-sidebar">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -270,9 +273,9 @@
             </div>
         </div>
     </nav>
-    <main class="section-padding">
+    <main class="section-padding bg-white">
         <div class="container">
-           
+            
 
             <div class="main-content-wrapper">
                 <div class="row g-5">
@@ -292,11 +295,7 @@
 
                     <div class="col-lg-6">
                         <div class="product-details-card d-flex flex-column h-100">
-                            <div class="deal-countdown-banner">
-                                <i class="fas fa-fire"></i> <strong>Deal of the Day!</strong> Ends in: 
-                                <span id="countdown-timer"></span>
-                            </div>
-                            
+
                             <div>
                                 <p class="text-muted mb-2">From <a href="#">Burger Palace</a></p>
                                 <h1 class="fw-bold display-5">Premium Angus Burger</h1>
@@ -307,38 +306,19 @@
                                 <p class="lead text-muted">A masterpiece of flavor. Our signature burger features a 1/2 lb juicy Angus beef patty, aged cheddar cheese, crispy bacon, and our secret house sauce.</p>
                             </div>
 
-                            <div class="customization-section" id="customization-options">
-                                <h5 class="mb-3">Customize Your Burger</h5>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label for="spice-level" class="form-label">Spice Level</label>
-                                        <select class="form-select" id="spice-level">
-                                            <option value="mild">Mild</option>
-                                            <option value="medium">Medium</option>
-                                            <option value="hot">Hot</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label class="form-label">Add-ons</label>
-                                        <div class="form-check"><input class="form-check-input addon-checkbox" type="checkbox" value="1.50" id="extraBacon"><label class="form-check-label" for="extraBacon">Extra Bacon <span class="price-tag">(+$1.50)</span></label></div>
-                                        <div class="form-check"><input class="form-check-input addon-checkbox" type="checkbox" value="1.00" id="extraCheese"><label class="form-check-label" for="extraCheese">Extra Cheese <span class="price-tag">(+$1.00)</span></label></div>
-                                        <div class="form-check"><input class="form-check-input addon-checkbox" type="checkbox" value="2.00" id="friedEgg"><label class="form-check-label" for="friedEgg">Fried Egg <span class="price-tag">(+$2.00)</span></label></div>
-                                    </div>
-                                </div>
-                            </div>
-
+                        
                             <div class="actions-wrapper mt-4" id="main-actions-wrapper">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h5 class="mb-0">Choose Quantity</h5>
                                     <div class="product-price fs-1" id="total-price" data-base-price="12.99">$12.99</div>
                                 </div>
-                                <div class="d-flex align-items-center gap-3">
+                                <div class="d-md-flex align-items-center gap-3">
                                     <div class="quantity-selector">
                                         <button id="decrease-qty" aria-label="Decrease quantity">-</button>
                                         <input type="text" id="quantity" value="1" readonly>
                                         <button id="increase-qty" aria-label="Increase quantity">+</button>
                                     </div>
-                                    <button class="btn btn-lg w-100 add-to-cart-main btn-primary-gradient"><i class="fas fa-shopping-cart me-2"></i> Add to Cart</button>
+                                    <button class="btn btn-lg w-100 add-to-cart-main btn-primary-gradient mt-3 mt-md-0"><i class="fas fa-shopping-cart me-2"></i> Add to Cart</button>
                                 </div>
                             </div>
                             
@@ -350,41 +330,56 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="mt-5 pt-4 bg-white">
+                    <ul class="nav nav-tabs bg-white" id="productTab" role="tablist">
+                        <li class="nav-item" role="presentation"><button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">Description & Nutrition</button></li>
+                        <li class="nav-item" role="presentation"><button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews (125)</button></li>
+                    </ul>
+                    <div class="tab-content p-4 bg-white" id="productTabContent">
+                        <div class="tab-pane fade show active" id="description" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-6 mb-4 mb-lg-0">
+                                    <h4 class="mb-3">Product Description</h4>
+                                    <p>Indulge in the ultimate burger experience. Our <strong>Premium Angus Burger</strong> is meticulously crafted with a 1/2 lb patty made from <strong>100% certified Angus beef</strong>, known for its rich marbling and superior flavor. Served on a freshly baked brioche bun with crisp lettuce, vine-ripened tomatoes, and a generous slice of aged cheddar cheese.</p>
+                                    <p class="fw-bold">Ingredients: Angus Beef, Brioche Bun, Aged Cheddar, House Sauce, Lettuce, Tomato, Bacon. <em>Contains dairy and wheat.</em></p>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h4 class="mb-3">Nutrition Facts (Per Serving)</h4>
+                                    <table class="nutrition-table table table-sm">
+                                        <tr class="nutrition-header"><td colspan="2">Amount Per Serving</td></tr>
+                                        <tr><td>Calories</td><td>750 kcal</td></tr>
+                                        <tr><td>Total Fat</td><td>45g</td></tr>
+                                        <tr><td>Saturated Fat</td><td>18g</td></tr>
+                                        <tr><td>Cholesterol</td><td>150mg</td></tr>
+                                        <tr><td>Sodium</td><td>850mg</td></tr>
+                                        <tr><td>Total Carbohydrates</td><td>45g</td></tr>
+                                        <tr><td>Dietary Fiber</td><td>3g</td></tr>
+                                        <tr><td>Protein</td><td>40g</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="reviews" role="tabpanel">
+                        </div>
+                    </div>
+                </div>
+
+            
             </div>
 
-            <div class="mt-5 pt-4">
-                <ul class="nav nav-tabs" id="productTab" role="tablist">
-                    <li class="nav-item" role="presentation"><button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">Description & Nutrition</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews (125)</button></li>
-                </ul>
-                <div class="tab-content p-4 rounded-bottom border-top-0 border-end border-bottom border-start bg-white" id="productTabContent">
-                    <div class="tab-pane fade show active" id="description" role="tabpanel">
-                        </div>
-                    
-                    <div class="tab-pane fade" id="reviews" role="tabpanel">
-                        </div>
-                </div>
-            </div>
+            
         </div>
     </main>
     
-    <section class="complementary-section section-padding pt-0">
-        <div class="container">
-            <h2 class="section-title">People Also Bought</h2>
-            <div class="row" id="people-also-bought-container">
-                <div class="col-md-6 col-lg-3"><div class="dish-card"><div class="skeleton skeleton-image"></div><div class="card-info"><div class="skeleton skeleton-text" style="width: 80%;"></div><div class="d-flex justify-content-between align-items-center"><div class="skeleton skeleton-price"></div></div><div class="skeleton skeleton-text mt-3" style="height: 38px;"></div></div></div></div>
-                <div class="col-md-6 col-lg-3"><div class="dish-card"><div class="skeleton skeleton-image"></div><div class="card-info"><div class="skeleton skeleton-text" style="width: 80%;"></div><div class="d-flex justify-content-between align-items-center"><div class="skeleton skeleton-price"></div></div><div class="skeleton skeleton-text mt-3" style="height: 38px;"></div></div></div></div>
-                <div class="col-md-6 col-lg-3"><div class="dish-card"><div class="skeleton skeleton-image"></div><div class="card-info"><div class="skeleton skeleton-text" style="width: 80%;"></div><div class="d-flex justify-content-between align-items-center"><div class="skeleton skeleton-price"></div></div><div class="skeleton skeleton-text mt-3" style="height: 38px;"></div></div></div></div>
-                <div class="col-md-6 col-lg-3"><div class="dish-card"><div class="skeleton skeleton-image"></div><div class="card-info"><div class="skeleton skeleton-text" style="width: 80%;"></div><div class="d-flex justify-content-between align-items-center"><div class="skeleton skeleton-price"></div></div><div class="skeleton skeleton-text mt-3" style="height: 38px;"></div></div></div></div>
-            </div>
-        </div>
-    </section>
+    
 
-    <section class="trending-section section-padding pt-0">
+    <section class="trending-section section-padding pt-5">
         <div class="container">
             <h2 class="section-title">You Might Also Like</h2>
             <div id="dishes-container" class="d-flex gap-3 overflow-auto pb-3">
-                </div>
+            </div>
         </div>
     </section>
 
@@ -411,7 +406,6 @@
 
 
     
-    <!-- Footer -->
     <footer id="contact">
         <div class="container"><div class="row"><div class="col-md-3 mb-4"><h5><i class="fas fa-utensils"></i> FoodHub</h5><p class="text-muted">Your favorite food, delivered fast at your door.</p></div><div class="col-md-3 mb-4"><h5>Quick Links</h5><a href="#">About Us</a><br><a href="#">Help Center</a><br><a href="#">Privacy Policy</a></div><div class="col-md-3 mb-4"><h5>Follow Us</h5><a href="#"><i class="fab fa-facebook me-2"></i> Facebook</a><br><a href="#"><i class="fab fa-twitter me-2"></i> Twitter</a><br><a href="#"><i class="fab fa-instagram me-2"></i> Instagram</a></div><div class="col-md-3 mb-4"><h5>Payment Partners</h5><div class="d-flex gap-2 fs-3"><i class="fab fa-cc-visa"></i><i class="fab fa-cc-mastercard"></i><i class="fab fa-cc-paypal"></i><i class="fab fa-google-pay"></i></div></div></div><hr style="border-color: #555;"><div class="text-center text-muted"><p>&copy; 2025 FoodHub. All rights reserved.</p></div></div>
     </footer>
@@ -438,7 +432,9 @@
                 mockReviews: [
                     { user: "BurgerLover88", rating: 5, date: "2 days ago", comment: "The best Angus burger I've ever had! Juicy, flavorful, and the bacon was perfectly crisp. A must-try." },
                     { user: "FoodieFanatic", rating: 4, date: "5 days ago", comment: "Great quality for the price. The patty was cooked exactly medium-rare. Only wish the bun was slightly less toasted." },
-                    { user: "FirstTimer", rating: 5, date: "1 week ago", comment: "Absolute perfection. Worth every penny, especially with the extra cheese add-on. Will order again!" }
+                    { user: "FirstTimer", rating: 5, date: "1 week ago", comment: "Absolute perfection. Worth every penny, especially with the extra cheese add-on. Will order again!" },
+                    { user: "SarahK", rating: 4, date: "2 weeks ago", comment: "Really solid burger. The house sauce is amazing! Delivery was also surprisingly fast." },
+                    { user: "MikeP", rating: 3, date: "3 weeks ago", comment: "It was good, but not 'premium' for the price. A bit greasy for my liking, but the fries were excellent." }
                 ]
             };
 
@@ -475,11 +471,13 @@
 
             // Event Listeners for Price Update
             // Using event delegation for customization options
-            customizationOptions.addEventListener('change', (e) => {
-                if (e.target.matches('.addon-checkbox')) {
-                    updateTotalPrice();
-                }
-            });
+            if (customizationOptions) {
+                customizationOptions.addEventListener('change', (e) => {
+                    if (e.target.matches('.addon-checkbox')) {
+                        updateTotalPrice();
+                    }
+                });
+            }
 
             decreaseQtyBtn.addEventListener('click', () => { 
                 if (parseInt(quantityInput.value) > 1) { 
@@ -612,6 +610,7 @@
 
             // ## "People Also Bought" Dynamic Loading (with skeleton loader simulation)
             const populatePeopleAlsoBought = () => {
+                if (!peopleAlsoBoughtContainer) return; // Guard clause if element doesn't exist
                 peopleAlsoBoughtContainer.innerHTML = ''; // Clear skeletons
                 config.complementaryItems.forEach(item => {
                     // Pass false for hasQuickView and true for isCol (to use Bootstrap grid)
@@ -622,6 +621,9 @@
 
             if (peopleAlsoBoughtContainer) {
                 setTimeout(populatePeopleAlsoBought, 1500); // Wait 1.5s to show loading effect
+            } else {
+                // If the container doesn't exist on this page, run immediately (or not at all)
+                // In this case, it doesn't exist, so this logic won't run.
             }
 
             // ## Image Gallery Thumbnail Switching
@@ -640,31 +642,8 @@
 
             // ## Tab Content Population
             
-            // 1. Description & Nutrition Tab
-            const nutritionHtml = `
-                <div class="row">
-                    <div class="col-lg-6 mb-4 mb-lg-0">
-                        <h4 class="mb-3">Product Description</h4>
-                        <p>Indulge in the ultimate burger experience. Our **Premium Angus Burger** is meticulously crafted with a 1/2 lb patty made from **100% certified Angus beef**, known for its rich marbling and superior flavor. Served on a freshly baked brioche bun with crisp lettuce, vine-ripened tomatoes, and a generous slice of aged cheddar cheese.</p>
-                        <p class="fw-bold">Ingredients: Angus Beef, Brioche Bun, Aged Cheddar, House Sauce, Lettuce, Tomato, Bacon. *Contains dairy and wheat.*</p>
-                    </div>
-                    <div class="col-lg-6">
-                        <h4 class="mb-3">Nutrition Facts (Per Serving)</h4>
-                        <table class="nutrition-table table table-sm">
-                            <tr class="nutrition-header"><td colspan="2">Amount Per Serving</td></tr>
-                            <tr><td>Calories</td><td>750 kcal</td></tr>
-                            <tr><td>Total Fat</td><td>45g</td></tr>
-                            <tr><td>Saturated Fat</td><td>18g</td></tr>
-                            <tr><td>Cholesterol</td><td>150mg</td></tr>
-                            <tr><td>Sodium</td><td>850mg</td></tr>
-                            <tr><td>Total Carbohydrates</td><td>45g</td></tr>
-                            <tr><td>Dietary Fiber</td><td>3g</td></tr>
-                            <tr><td>Protein</td><td>40g</td></tr>
-                        </table>
-                    </div>
-                </div>
-            `;
-            document.getElementById('description').innerHTML = nutritionHtml;
+            // --- MODIFICATION: Removed the JavaScript injection for the 'description' tab ---
+            // The content is now directly in the HTML file.
 
 
             // 2. Reviews Tab
@@ -701,7 +680,7 @@
 
                 // Reviews List
                 reviewsHtml += `<div class="col-lg-7">
-                                <h4 class="mb-3">Customer Reviews (${config.mockReviews.length} shown)</h4>`;
+                                    <h4 class="mb-3">Customer Reviews (${config.mockReviews.length} shown)</h4>`;
                 
                 config.mockReviews.forEach(review => {
                     reviewsHtml += `
